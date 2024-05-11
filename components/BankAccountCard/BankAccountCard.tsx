@@ -13,7 +13,7 @@ const BankAccountCard = ({
     return (
         <Link
             href={`/account/${id}`}
-            className={`flex flex-col justify-between bg-white h-40 w-64 p-2 rounded-md shadow-xl bg-cover text-white`}
+            className={`flex flex-col justify-between bg-white h-40 min-w-64 p-2 rounded-md shadow-xl bg-cover text-white snap-end`}
             style={{
                 backgroundImage: `url(/images/accounts/${type}.png)`,
             }}

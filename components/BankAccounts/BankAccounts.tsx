@@ -1,12 +1,13 @@
 import React from "react";
 import BankAccountCard from "@/components/BankAccountCard/BankAccountCard";
 import { fetchBankAccounts } from "@/components/BankAccounts/services";
+import HorizontalScroll from "@/components/HorizontalScroll/HorizontalScroll";
 
 const BankAccounts = async () => {
     const accounts = await fetchBankAccounts();
 
     return (
-        <section className='flex gap-2'>
+        <HorizontalScroll>
             {accounts.map(({ id, ownerId, currency, balance, type }) => (
                 <BankAccountCard
                     key={id}
@@ -17,7 +18,7 @@ const BankAccounts = async () => {
                     type={type}
                 />
             ))}
-        </section>
+        </HorizontalScroll>
     );
 };
 
