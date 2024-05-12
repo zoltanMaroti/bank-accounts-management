@@ -4,9 +4,9 @@ import DashboardIcon from "@/assets/icons/dashboard.svg";
 import InboxIcon from "@/assets/icons/inbox.svg";
 import SignOutIcon from "@/assets/icons/signOut.svg";
 import MenuIcon from "@/assets/icons/menu.svg";
-import AvatarIcon from "@/assets/icons/avatar.svg";
 import NotificationsButton from "@/components/NotificationsButton/NotificationsButton";
 import Indicator from "@/components/Indicator/Indicator";
+import AvatarButton from "@/components/AvatarButton/AvatarButton";
 
 const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
     return (
@@ -25,14 +25,7 @@ const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
                     </div>
                     <div className='flex items-center gap-3'>
                         <NotificationsButton />
-                        <button
-                            type='button'
-                            className='rounded-full focus:ring-4 focus:ring-gray-300'
-                        >
-                            <div className='relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full'>
-                                <AvatarIcon className='absolute w-12 h-12 text-gray-400 -left-1' />
-                            </div>
-                        </button>
+                        <AvatarButton />
                     </div>
                 </div>
             </header>
