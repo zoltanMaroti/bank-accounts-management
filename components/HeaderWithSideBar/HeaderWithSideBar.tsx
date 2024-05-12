@@ -5,6 +5,8 @@ import InboxIcon from "@/assets/icons/inbox.svg";
 import SignOutIcon from "@/assets/icons/signOut.svg";
 import MenuIcon from "@/assets/icons/menu.svg";
 import AvatarIcon from "@/assets/icons/avatar.svg";
+import NotificationsButton from "@/components/NotificationsButton/NotificationsButton";
+import Indicator from "@/components/Indicator/Indicator";
 
 const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
     return (
@@ -21,14 +23,17 @@ const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
 
                         <span className='text-xl font-semibold'>Bank</span>
                     </div>
-                    <button
-                        type='button'
-                        className='rounded-full focus:ring-4 focus:ring-gray-300'
-                    >
-                        <div className='relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full'>
-                            <AvatarIcon className='absolute w-12 h-12 text-gray-400 -left-1' />
-                        </div>
-                    </button>
+                    <div className='flex items-center gap-3'>
+                        <NotificationsButton />
+                        <button
+                            type='button'
+                            className='rounded-full focus:ring-4 focus:ring-gray-300'
+                        >
+                            <div className='relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full'>
+                                <AvatarIcon className='absolute w-12 h-12 text-gray-400 -left-1' />
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </header>
 
@@ -44,9 +49,7 @@ const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
                     <NavLink href='#'>
                         <InboxIcon className='w-5 h-5 text-gray-50 group-hover:text-blue-400' />
                         <span className='flex-1 ms-3'>Inbox</span>
-                        <span className='inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full'>
-                            3
-                        </span>
+                        <Indicator value={3} className='' />
                     </NavLink>
                     <NavLink href='#'>
                         <SignOutIcon className='w-5 h-5 text-gray-50 group-hover:text-blue-400' />
