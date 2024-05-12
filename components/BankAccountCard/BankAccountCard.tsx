@@ -13,18 +13,18 @@ const BankAccountCard = ({
     return (
         <Link
             href={`/account/${id}`}
-            className={`flex flex-col justify-between bg-white h-40 min-w-64 p-2 rounded-md shadow-xl bg-cover text-white snap-end`}
+            className={`flex flex-col justify-between bg-white h-40 min-w-64 p-3 rounded-md shadow-xl bg-cover text-white snap-center`}
             style={{
                 backgroundImage: `url(/images/accounts/${type}.png)`,
             }}
         >
             <div>
-                <div className='capitalize'>{type}</div>
-                <div>{id}</div>
+                <p className='capitalize'>{type}</p>
+                <p>{id}</p>
             </div>
-            <div className='text-xl font-semibold'>
+            <p className='text-xl font-semibold'>
                 {formatCurrency(currency, balance)}
-            </div>
+            </p>
         </Link>
     );
 };
