@@ -3,13 +3,17 @@ import BankAccountCard from "@/components/BankAccountCard/BankAccountCard";
 import { fetchBankAccounts } from "@/components/BankAccounts/services";
 import HorizontalScroll from "@/components/HorizontalScroll/HorizontalScroll";
 import CreateBankAccount from "@/components/CreateBankAccount/CreateBankAccount";
+import SearchBankAccount from "@/components/SearchBankAccount/SearchBankAccount";
 
 const BankAccounts = async () => {
     const accounts = await fetchBankAccounts();
 
     return (
-        <section className='m-2'>
-            <h1 className='text-xl mb-2'>My accounts</h1>
+        <section className='flex flex-col gap-4 m-2'>
+            <div className='flex justify-between items-center'>
+                <h1 className='flex-1 text-2xl font-bold'>My accounts</h1>
+                <SearchBankAccount />
+            </div>
             <div className='flex gap-2'>
                 <CreateBankAccount />
                 <HorizontalScroll>
