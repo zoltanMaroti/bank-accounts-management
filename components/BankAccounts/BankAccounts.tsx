@@ -11,7 +11,7 @@ const BankAccounts = async () => {
     return (
         <section className='flex flex-col gap-4 m-2'>
             <div className='flex justify-between items-center'>
-                <h1 className='flex-1 text-2xl font-bold'>My accounts</h1>
+                <h1 className='flex-1 text-2xl font-bold'>Your accounts</h1>
                 <SearchBankAccount />
             </div>
             <div className='flex gap-2'>
