@@ -25,7 +25,6 @@ const BankAccountCard = ({
         >
             <div>
                 <p className='capitalize'>{type}</p>
-                <p>{id}</p>
             </div>
             <p className='text-xl font-semibold'>
                 {formatCurrency(currency, balance)}
