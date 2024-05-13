@@ -9,3 +9,5 @@ export type BankAccount = {
     balance: number;
     type: AccountType;
 };
+
+export type BankAccountCardProps = BankAccount & { className?: string };

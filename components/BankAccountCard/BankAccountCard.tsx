@@ -1,7 +1,8 @@
 import React from "react";
-import { BankAccount } from "@/components/BankAccountCard/types";
+import { BankAccountCardProps } from "@/components/BankAccountCard/types";
 import { formatCurrency } from "@/components/BankAccountCard/utils";
 import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 
 const BankAccountCard = ({
     id,
@@ -9,11 +10,15 @@ const BankAccountCard = ({
     currency,
     balance,
     type,
-}: BankAccount) => {
+    className,
+}: BankAccountCardProps) => {
     return (
         <Link
             href={`/account/${id}`}
-            className='flex flex-col justify-between bg-white h-40 min-w-64 p-3 rounded-md bg-cover text-white snap-start'
+            className={twMerge(
+                "flex flex-col justify-between bg-white h-40 min-w-64 p-3 rounded-md bg-cover text-white snap-start",
+                className
+            )}
             style={{
                 backgroundImage: `url(/images/accounts/${type}.png)`,
             }}
