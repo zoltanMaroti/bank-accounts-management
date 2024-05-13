@@ -1,15 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import Input from "@/components/Input/Input";
 import Select from "@/components/Select/Select";
 import { useForm, SubmitHandler } from "react-hook-form";
 import BankAccountCard from "@/components/BankAccountCard/BankAccountCard";
 import BankAccountTypeSelector from "@/components/BankAccountTypeSelector/BankAccountTypeSelector";
 import { BankAccountFormValues } from "@/components/BankAccountForm/types";
-import { AccountType, Currency } from "../BankAccountCard/types";
+import { AccountType, Currency } from "@/components/BankAccountCard/types";
+import { BankAccount } from "@/components/BankAccountCard/types";
 
-const BankAccountForm = () => {
+const BankAccountForm = ({
+    callback,
+}: {
+    callback: (data: BankAccountFormValues) => Promise<BankAccount | never>;
+}) => {
+    const [isPending, startTransition] = useTransition();
+
     const {
         clearErrors,
         register,
@@ -19,8 +26,11 @@ const BankAccountForm = () => {
         formState: { errors },
     } = useForm<BankAccountFormValues>();
 
-    const onSubmit: SubmitHandler<BankAccountFormValues> = (data) =>
-        console.log(data);
+    const onSubmit: SubmitHandler<BankAccountFormValues> = (data) => {
+        startTransition(() => {
+            callback(data);
+        });
+    };
 
     return (
         <>
@@ -74,9 +84,10 @@ const BankAccountForm = () => {
                 />
                 <button
                     type='submit'
+                    disabled={isPending}
                     className='mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2'
                 >
-                    Save account
+                    {isPending ? "Saving account..." : "Save account"}
                 </button>
             </form>
         </>
