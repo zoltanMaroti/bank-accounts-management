@@ -25,7 +25,7 @@ const BankAccountCard = ({
         <Link
             href={`/account/${id}`}
             className={twMerge(
-                "flex flex-col justify-between relative bg-white h-40 min-w-64 p-3 rounded-md bg-cover text-white snap-start",
+                "flex flex-col justify-between relative bg-white h-40 min-w-64 p-3 rounded-md bg-cover text-white",
                 className
             )}
             style={{

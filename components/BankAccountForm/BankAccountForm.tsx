@@ -15,6 +15,8 @@ import { BankAccountFormValues } from "@/components/BankAccountForm/types";
 import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { BankAccount } from "@/components/BankAccountCard/types";
 import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
+import DeleteBankAccountButton from "@/components/DeleteBankAccountButton/DeleteBankAccountButton";
+import { hasBalance } from "@/components/DeleteBankAccountButton/utils";
 
 const BankAccountForm = ({
     title,
@@ -80,12 +82,20 @@ const BankAccountForm = ({
                 className='pointer-events-none'
             />
             <form
-                className='bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'
+                className='relative bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <h1 className='flex-1 text-xl font-bold text-center'>
                     {title}
                 </h1>
+                {bankAccount ? (
+                    <div className='absolute top-4 right-4'>
+                        <DeleteBankAccountButton
+                            bankAccount={bankAccount}
+                            isDisabled={hasBalance(bankAccount?.balance)}
+                        />
+                    </div>
+                ) : null}
                 <hr className='border mb-2' />
                 <BankAccountTypeSelector
                     onChange={onChangeAccountType}
