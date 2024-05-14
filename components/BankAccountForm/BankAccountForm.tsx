@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useState, useTransition, useCallback } from "react";
 import Input from "@/components/Input/Input";
 import Select from "@/components/Select/Select";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -16,13 +16,14 @@ const BankAccountForm = ({
     callback: (data: BankAccountFormValues) => Promise<BankAccount | never>;
 }) => {
     const [isPending, startTransition] = useTransition();
+    const [description, setDescription] = useState("");
+    const [currency, setCurrency] = useState<Currency>();
+    const [accountType, setAccountType] = useState<AccountType>("savings");
 
     const {
-        clearErrors,
         register,
         setValue,
         handleSubmit,
-        getValues,
         formState: { errors },
     } = useForm<BankAccountFormValues>();
 
@@ -32,14 +33,29 @@ const BankAccountForm = ({
         });
     };
 
+    const onChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setDescription(e.target.value);
+
+    const onChangeCurrency = (e: React.ChangeEvent<HTMLSelectElement>) =>
+        setCurrency(e.target.value as Currency);
+
+    const onChangeAccountType = useCallback(
+        (value: AccountType) => {
+            setValue("accountType", value);
+            setAccountType(value);
+        },
+        [setValue]
+    );
+
     return (
         <>
             <BankAccountCard
-                id={0}
+                id={"0"}
                 ownerId={1}
-                currency={(getValues("currency") as Currency) || ""}
+                currency={currency}
                 balance={0}
-                type={(getValues("accountType") as AccountType) || "savings"}
+                type={accountType}
+                description={description}
                 className='pointer-events-none'
             />
             <form
@@ -51,9 +67,8 @@ const BankAccountForm = ({
                 </h1>
                 <hr className='border mb-2' />
                 <BankAccountTypeSelector
-                    onChange={setValue}
+                    onChange={onChangeAccountType}
                     hasError={!!errors?.accountType}
-                    clearErrors={clearErrors}
                     register={register}
                 />
                 <Select
@@ -67,6 +82,7 @@ const BankAccountForm = ({
                             message: "This field is required",
                         },
                     })}
+                    onChange={onChangeCurrency}
                 >
                     <option value=''>Please choose an option</option>
                     <option value='EUR'>Euro</option>
@@ -74,13 +90,14 @@ const BankAccountForm = ({
                     <option value='GBP'>British Pound</option>
                 </Select>
                 <Input
+                    {...register("description")}
                     type='text'
                     id='description'
                     placeholder='Add description'
                     label='Account description (optional)'
                     hasError={!!errors?.description}
                     errorMessage={errors?.description?.message}
-                    {...register("description")}
+                    onChange={onChangeDescription}
                 />
                 <button
                     type='submit'

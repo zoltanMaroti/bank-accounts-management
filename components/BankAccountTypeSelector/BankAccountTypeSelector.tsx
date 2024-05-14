@@ -5,21 +5,16 @@ import SavingsIcon from "@/assets/icons/savings.svg";
 import CurrencyIcon from "@/assets/icons/currency.svg";
 import SalaryIcon from "@/assets/icons/salary.svg";
 import { twMerge } from "tailwind-merge";
-import {
-    UseFormSetValue,
-    UseFormClearErrors,
-    UseFormRegister,
-} from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import { BankAccountFormValues } from "@/components/BankAccountForm/types";
+import { AccountType } from "@/components/BankAccountCard/types";
 
 const BankAccountTypeSelector = ({
     onChange,
     hasError,
-    clearErrors,
     register,
 }: {
-    onChange: UseFormSetValue<BankAccountFormValues>;
-    clearErrors: UseFormClearErrors<BankAccountFormValues>;
+    onChange: (value: AccountType) => void;
     register: UseFormRegister<BankAccountFormValues>;
     hasError: boolean;
 }) => {
@@ -27,13 +22,19 @@ const BankAccountTypeSelector = ({
 
     const onSelectAccountType = (value: string) => {
         setAccountType(value);
-        onChange("accountType", value);
-        clearErrors("accountType");
+        onChange(value as AccountType);
     };
 
     useEffect(() => {
+        // Register component ref in form
         register("accountType", { required: true });
-    }, [register]);
+
+        // Set local state
+        setAccountType("savings");
+
+        // Callback
+        onChange("savings");
+    }, [register, onChange]);
 
     return (
         <div>
