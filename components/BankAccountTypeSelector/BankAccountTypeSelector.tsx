@@ -13,12 +13,14 @@ const BankAccountTypeSelector = ({
     onChange,
     hasError,
     register,
+    defaultValue,
 }: {
     onChange: (value: AccountType) => void;
     register: UseFormRegister<BankAccountFormValues>;
     hasError: boolean;
+    defaultValue?: string;
 }) => {
-    const [accountType, setAccountType] = useState("savings");
+    const [accountType, setAccountType] = useState("");
 
     const onSelectAccountType = (value: string) => {
         setAccountType(value);
@@ -29,12 +31,12 @@ const BankAccountTypeSelector = ({
         // Register component ref in form
         register("accountType", { required: true });
 
-        // Set local state
-        setAccountType("savings");
+        // Set local state default value
+        setAccountType(defaultValue || "savings");
 
         // Callback
-        onChange("savings");
-    }, [register, onChange]);
+        onChange((defaultValue as AccountType) || "savings");
+    }, [register, onChange, defaultValue]);
 
     return (
         <div>

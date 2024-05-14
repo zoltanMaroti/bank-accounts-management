@@ -1,6 +1,11 @@
 "use client";
 
-import React, { useState, useTransition, useCallback } from "react";
+import React, {
+    useState,
+    useTransition,
+    useCallback,
+    ChangeEvent,
+} from "react";
 import Input from "@/components/Input/Input";
 import Select from "@/components/Select/Select";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -11,50 +16,65 @@ import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { BankAccount } from "@/components/BankAccountCard/types";
 
 const BankAccountForm = ({
+    bankAccount,
     callback,
 }: {
-    callback: (data: BankAccountFormValues) => Promise<BankAccount | never>;
+    bankAccount?: BankAccount;
+    callback: (
+        data: BankAccountFormValues,
+        id?: string
+    ) => Promise<BankAccount | never>;
 }) => {
     const [isPending, startTransition] = useTransition();
-    const [description, setDescription] = useState("");
-    const [currency, setCurrency] = useState<Currency>();
-    const [accountType, setAccountType] = useState<AccountType>("savings");
+    const [description, setDescription] = useState(bankAccount?.description);
+    const [currency, setCurrency] = useState<Currency>(
+        bankAccount?.currency as Currency
+    );
+    const [accountType, setAccountType] = useState<AccountType>(
+        bankAccount?.accountType || "savings"
+    );
 
     const {
         register,
-        setValue,
+        setValue: setFormValue,
         handleSubmit,
         formState: { errors },
-    } = useForm<BankAccountFormValues>();
+    } = useForm<BankAccountFormValues>({
+        defaultValues: {
+            accountType: bankAccount?.accountType,
+            currency: bankAccount?.currency,
+            description: bankAccount?.description,
+        },
+    });
 
     const onSubmit: SubmitHandler<BankAccountFormValues> = (data) => {
         startTransition(() => {
-            callback(data);
+            callback(data, bankAccount?.id);
         });
     };
 
-    const onChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) =>
+    const onChangeDescription = (e: ChangeEvent<HTMLInputElement>) =>
         setDescription(e.target.value);
 
-    const onChangeCurrency = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    const onChangeCurrency = (e: ChangeEvent<HTMLSelectElement>) =>
         setCurrency(e.target.value as Currency);
 
     const onChangeAccountType = useCallback(
         (value: AccountType) => {
-            setValue("accountType", value);
+            setFormValue("accountType", value);
             setAccountType(value);
         },
-        [setValue]
+        [setFormValue]
     );
 
     return (
         <>
             <BankAccountCard
-                id={"0"}
+                id={bankAccount?.id || ""}
                 ownerId={1}
                 currency={currency}
-                balance={0}
-                type={accountType}
+                balance={bankAccount?.balance || 0}
+                accountType={accountType}
                 description={description}
                 className='pointer-events-none'
             />
@@ -70,6 +90,7 @@ const BankAccountForm = ({
                     onChange={onChangeAccountType}
                     hasError={!!errors?.accountType}
                     register={register}
+                    defaultValue={accountType}
                 />
                 <Select
                     id='currency'
@@ -83,6 +104,7 @@ const BankAccountForm = ({
                         },
                     })}
                     onChange={onChangeCurrency}
+                    defaultValue={currency}
                 >
                     <option value=''>Please choose an option</option>
                     <option value='EUR'>Euro</option>
@@ -98,6 +120,7 @@ const BankAccountForm = ({
                     hasError={!!errors?.description}
                     errorMessage={errors?.description?.message}
                     onChange={onChangeDescription}
+                    defaultValue={description}
                 />
                 <button
                     type='submit'

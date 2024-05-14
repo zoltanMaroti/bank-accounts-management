@@ -23,7 +23,7 @@ const BankAccounts = async () => {
                             ownerId,
                             currency,
                             balance,
-                            type,
+                            accountType,
                             description,
                         }) => (
                             <BankAccountCard
@@ -32,7 +32,7 @@ const BankAccounts = async () => {
                                 ownerId={ownerId}
                                 currency={currency}
                                 balance={balance}
-                                type={type}
+                                accountType={accountType}
                                 description={description}
                             />
                         )

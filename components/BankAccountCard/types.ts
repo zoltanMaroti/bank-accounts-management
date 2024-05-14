@@ -7,7 +7,7 @@ export type BankAccount = {
     ownerId: number;
     currency?: Currency;
     balance: number;
-    type: AccountType;
+    accountType: AccountType;
     description?: string;
 };
 

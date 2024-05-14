@@ -10,3 +10,15 @@ export const fetchBankAccounts = async (): Promise<BankAccount[]> => {
 
     return response.json();
 };
+
+export const fetchBankAccount = async (id: string | string[]) => {
+    const response = await fetch(`${process.env.API_URL}/accounts/${id}`);
+
+    if (!response.ok) {
+        // Handle error, log to Sentry etc.
+        console.error("Failed to fetch bank account", id);
+        return;
+    }
+
+    return response.json();
+};
