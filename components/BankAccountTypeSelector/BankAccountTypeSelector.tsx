@@ -8,17 +8,20 @@ import { twMerge } from "tailwind-merge";
 import { UseFormRegister } from "react-hook-form";
 import { BankAccountFormValues } from "@/components/BankAccountForm/types";
 import { AccountType } from "@/components/BankAccountCard/types";
+import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
 
 const BankAccountTypeSelector = ({
     onChange,
     hasError,
     register,
+    defaultValue,
 }: {
     onChange: (value: AccountType) => void;
     register: UseFormRegister<BankAccountFormValues>;
     hasError: boolean;
+    defaultValue?: string;
 }) => {
-    const [accountType, setAccountType] = useState("savings");
+    const [accountType, setAccountType] = useState("");
 
     const onSelectAccountType = (value: string) => {
         setAccountType(value);
@@ -29,12 +32,12 @@ const BankAccountTypeSelector = ({
         // Register component ref in form
         register("accountType", { required: true });
 
-        // Set local state
-        setAccountType("savings");
+        // Set local state default value
+        setAccountType(defaultValue || DEFAULT_BANK_ACCOUNT_TYPE);
 
         // Callback
-        onChange("savings");
-    }, [register, onChange]);
+        onChange((defaultValue as AccountType) || DEFAULT_BANK_ACCOUNT_TYPE);
+    }, [register, onChange, defaultValue]);
 
     return (
         <div>

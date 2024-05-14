@@ -15,12 +15,11 @@ const bankAccountIcons = {
 
 const BankAccountCard = ({
     id,
-    ownerId,
     currency,
     balance,
-    type,
-    className,
+    accountType,
     description,
+    className,
 }: BankAccountCardProps) => {
     return (
         <Link
@@ -30,11 +29,11 @@ const BankAccountCard = ({
                 className
             )}
             style={{
-                backgroundImage: `url(/images/accounts/${type}.png)`,
+                backgroundImage: `url(/images/accounts/${accountType}.png)`,
             }}
         >
             <div>
-                <p className='capitalize'>{type}</p>
+                <p className='capitalize'>{accountType}</p>
                 <p className='text-sm font-light'>{description}</p>
             </div>
 
@@ -42,7 +41,7 @@ const BankAccountCard = ({
                 {currency ? formatCurrency(currency, balance) : null}
             </p>
             <span className='absolute bottom-4 right-4'>
-                {bankAccountIcons[type]}
+                {bankAccountIcons[accountType]}
             </span>
         </Link>
     );

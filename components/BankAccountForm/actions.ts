@@ -1,7 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { fetchCreateBankAccount } from "@/components/BankAccountForm/services";
+import {
+    fetchCreateBankAccount,
+    fetchUpdateBankAccount,
+} from "@/components/BankAccountForm/services";
 import { BankAccountFormValues } from "@/components/BankAccountForm/types";
 import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { generateBankAccountId } from "@/components/BankAccountCard/utils";
@@ -19,9 +22,21 @@ export const createBankAccount = async (data: BankAccountFormValues) => {
         ownerId: 1,
         balance: 0,
         currency: currency as Currency,
-        type: accountType as AccountType,
+        accountType: accountType as AccountType,
         description,
     });
 
+    redirect("/");
+};
+
+export const updateBankAccount = async (
+    data: BankAccountFormValues,
+    id?: string
+) => {
+    if (!id) {
+        throw new Error("Missing bank account id");
+    }
+
+    await fetchUpdateBankAccount(data, id);
     redirect("/");
 };
