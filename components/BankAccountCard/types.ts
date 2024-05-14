@@ -3,8 +3,8 @@ export type Currency = "EUR" | "USD" | "GBP";
 export type AccountType = "savings" | "currency" | "salary";
 
 export type BankAccount = {
-    id: string;
-    ownerId: number;
+    id?: string;
+    ownerId?: number;
     currency?: Currency;
     balance: number;
     accountType: AccountType;

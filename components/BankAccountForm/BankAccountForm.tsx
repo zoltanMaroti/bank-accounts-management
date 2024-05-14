@@ -14,6 +14,7 @@ import BankAccountTypeSelector from "@/components/BankAccountTypeSelector/BankAc
 import { BankAccountFormValues } from "@/components/BankAccountForm/types";
 import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { BankAccount } from "@/components/BankAccountCard/types";
+import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
 
 const BankAccountForm = ({
     bankAccount,
@@ -31,7 +32,7 @@ const BankAccountForm = ({
         bankAccount?.currency as Currency
     );
     const [accountType, setAccountType] = useState<AccountType>(
-        bankAccount?.accountType || "savings"
+        bankAccount?.accountType || DEFAULT_BANK_ACCOUNT_TYPE
     );
 
     const {
@@ -70,8 +71,6 @@ const BankAccountForm = ({
     return (
         <>
             <BankAccountCard
-                id={bankAccount?.id || ""}
-                ownerId={1}
                 currency={currency}
                 balance={bankAccount?.balance || 0}
                 accountType={accountType}
