@@ -1,14 +1,11 @@
 import { Currency } from "@/components/BankAccountCard/types";
+import { v4 as uuidv4 } from "uuid";
 
 export const formatCurrency = (
     currency: Currency,
     amount: number,
     options?: Intl.NumberFormatOptions
 ) => {
-    if (!currency || !amount) {
-        return;
-    }
-
     return new Intl.NumberFormat("en", {
         style: "currency",
         currency,
@@ -16,3 +13,5 @@ export const formatCurrency = (
         ...options,
     }).format(amount);
 };
+
+export const generateBankAccountId = () => uuidv4();
