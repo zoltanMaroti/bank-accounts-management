@@ -6,7 +6,10 @@ export default function CreateBankAccountPage() {
     return (
         <section className='m-2 flex flex-col items-center'>
             <div className='w-96'>
-                <BankAccountForm callback={createBankAccount} />
+                <BankAccountForm
+                    title={"Add new account"}
+                    callback={createBankAccount}
+                />
             </div>
         </section>
     );
