@@ -16,6 +16,7 @@ import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { BankAccount } from "@/components/BankAccountCard/types";
 import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
 import DeleteBankAccountButton from "@/components/DeleteBankAccountButton/DeleteBankAccountButton";
+import { hasBalance } from "@/components/DeleteBankAccountButton/utils";
 
 const BankAccountForm = ({
     title,
@@ -89,7 +90,10 @@ const BankAccountForm = ({
                 </h1>
                 {bankAccount ? (
                     <div className='absolute top-4 right-4'>
-                        <DeleteBankAccountButton bankAccount={bankAccount} />
+                        <DeleteBankAccountButton
+                            bankAccount={bankAccount}
+                            isDisabled={hasBalance(bankAccount?.balance)}
+                        />
                     </div>
                 ) : null}
                 <hr className='border mb-2' />
