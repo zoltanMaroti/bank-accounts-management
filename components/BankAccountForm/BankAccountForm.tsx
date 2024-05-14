@@ -17,9 +17,11 @@ import { BankAccount } from "@/components/BankAccountCard/types";
 import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
 
 const BankAccountForm = ({
+    title,
     bankAccount,
     callback,
 }: {
+    title: string;
     bankAccount?: BankAccount;
     callback: (
         data: BankAccountFormValues,
@@ -82,7 +84,7 @@ const BankAccountForm = ({
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <h1 className='flex-1 text-xl font-bold text-center'>
-                    Add new account
+                    {title}
                 </h1>
                 <hr className='border mb-2' />
                 <BankAccountTypeSelector

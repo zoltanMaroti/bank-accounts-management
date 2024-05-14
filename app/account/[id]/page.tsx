@@ -19,6 +19,7 @@ export default async function EditBankAccountPage({
         <section className='m-2 flex flex-col items-center'>
             <div className='w-96'>
                 <BankAccountForm
+                    title={"Edit account"}
                     bankAccount={bankAccount}
                     callback={updateBankAccount}
                 />
