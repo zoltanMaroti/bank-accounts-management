@@ -35,17 +35,17 @@ const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
                     Bank
                 </div>
                 <nav className='flex flex-col gap-1 space-y-2'>
-                    <NavLink href='#'>
-                        <DashboardIcon className='w-5 h-5 text-gray-50 group-hover:text-blue-400' />
+                    <NavLink href='/'>
+                        <DashboardIcon className='w-5 h-5 text-gray-50' />
                         <span className='ms-3'>Dashboard</span>
                     </NavLink>
                     <NavLink href='#'>
-                        <InboxIcon className='w-5 h-5 text-gray-50 group-hover:text-blue-400' />
+                        <InboxIcon className='w-5 h-5 text-gray-50' />
                         <span className='flex-1 ms-3'>Inbox</span>
                         <Indicator value={3} className='' />
                     </NavLink>
                     <NavLink href='#'>
-                        <SignOutIcon className='w-5 h-5 text-gray-50 group-hover:text-blue-400' />
+                        <SignOutIcon className='w-5 h-5 text-gray-50' />
                         <span className='ms-3'>Sign Out</span>
                     </NavLink>
                 </nav>

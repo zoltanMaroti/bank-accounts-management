@@ -2,7 +2,7 @@ import React from "react";
 import BankAccountCard from "@/components/BankAccountCard/BankAccountCard";
 import { fetchBankAccounts } from "@/components/BankAccounts/services";
 import HorizontalScroll from "@/components/HorizontalScroll/HorizontalScroll";
-import CreateBankAccount from "@/components/CreateBankAccount/CreateBankAccount";
+import CreateBankAccountButton from "@/components/CreateBankAccountButton/CreateBankAccountButton";
 import SearchBankAccount from "@/components/SearchBankAccount/SearchBankAccount";
 
 const BankAccounts = async () => {
@@ -15,10 +15,17 @@ const BankAccounts = async () => {
                 <SearchBankAccount />
             </div>
             <div className='flex gap-2'>
-                <CreateBankAccount />
+                <CreateBankAccountButton />
                 <HorizontalScroll>
                     {accounts.map(
-                        ({ id, ownerId, currency, balance, type }) => (
+                        ({
+                            id,
+                            ownerId,
+                            currency,
+                            balance,
+                            type,
+                            description,
+                        }) => (
                             <BankAccountCard
                                 key={id}
                                 id={id}
@@ -26,6 +33,7 @@ const BankAccounts = async () => {
                                 currency={currency}
                                 balance={balance}
                                 type={type}
+                                description={description}
                             />
                         )
                     )}

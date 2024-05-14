@@ -2,10 +2,10 @@ import Link from "next/link";
 import React from "react";
 import AddIcon from "@/assets/icons/plus.svg";
 
-const CreateBankAccount = () => {
+const CreateBankAccountButton = () => {
     return (
         <Link
-            href={"/create-account"}
+            href={"/account/open"}
             className='flex flex-col h-40 min-w-48 p-3 rounded-md bg-neutral-300'
         >
             <div className='flex flex-1 items-center justify-center'>
@@ -22,4 +22,4 @@ const CreateBankAccount = () => {
     );
 };
 
-export default CreateBankAccount;
+export default CreateBankAccountButton;
