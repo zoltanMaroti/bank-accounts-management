@@ -18,7 +18,14 @@ const BankAccounts = async () => {
                 <CreateBankAccountButton />
                 <HorizontalScroll>
                     {accounts.map(
-                        ({ id, ownerId, currency, balance, type }) => (
+                        ({
+                            id,
+                            ownerId,
+                            currency,
+                            balance,
+                            type,
+                            description,
+                        }) => (
                             <BankAccountCard
                                 key={id}
                                 id={id}
@@ -26,6 +33,7 @@ const BankAccounts = async () => {
                                 currency={currency}
                                 balance={balance}
                                 type={type}
+                                description={description}
                             />
                         )
                     )}
