@@ -1,25 +1,28 @@
 {
     "accounts": [
         {
-            "id": 246750752,
+            "id": "b914a6c3-38c9-4316-8452-8563394ef3bc",
             "ownerId": 1,
             "currency": "EUR",
             "balance": 10000,
-            "type": "savings"
+            "type": "savings",
+            "description": "My savings account for holiday"
         },
         {
-            "id": 897157583,
+            "id": "08544aa9-ba48-4fe0-b9a5-3d25e73c9bb0",
             "ownerId": 1,
             "currency": "USD",
             "balance": 5000,
-            "type": "currency"
+            "type": "currency",
+            "description": "USD currency investment account"
         },
         {
-            "id": 610613751,
+            "id": "0f844aa6-03a4-4059-8d80-9990903edfa8",
             "ownerId": 1,
             "currency": "GBP",
             "balance": 3000,
-            "type": "salary"
+            "type": "salary",
+            "description": "My company salary account"
         }
     ]
 }

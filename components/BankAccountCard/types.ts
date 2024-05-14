@@ -3,11 +3,16 @@ export type Currency = "EUR" | "USD" | "GBP";
 export type AccountType = "savings" | "currency" | "salary";
 
 export type BankAccount = {
-    id: number;
+    id: string;
     ownerId: number;
-    currency: Currency;
+    currency?: Currency;
     balance: number;
     type: AccountType;
+    description?: string;
 };
 
-export type BankAccountCardProps = BankAccount & { className?: string };
+export type Stylable = {
+    className?: string;
+};
+
+export type BankAccountCardProps = BankAccount & Stylable;
