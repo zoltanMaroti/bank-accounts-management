@@ -1,28 +1,42 @@
 {
-  "accounts": [
-    {
-      "id": "b914a6c3-38c9-4316-8452-8563394ef3bc",
-      "ownerId": 1,
-      "currency": "EUR",
-      "balance": 10000,
-      "accountType": "savings",
-      "description": "My savings account for holiday"
-    },
-    {
-      "id": "08544aa9-ba48-4fe0-b9a5-3d25e73c9bb0",
-      "ownerId": 1,
-      "currency": "USD",
-      "balance": 5000,
-      "accountType": "currency",
-      "description": "USD currency investment account"
-    },
-    {
-      "id": "0f844aa6-03a4-4059-8d80-9990903edfa8",
-      "ownerId": 1,
-      "currency": "GBP",
-      "balance": 3000,
-      "accountType": "salary",
-      "description": "My company salary account"
+    "accounts": [
+        {
+            "id": "b914a6c3-38c9-4316-8452-8563394ef3bc",
+            "ownerId": 1,
+            "currency": "EUR",
+            "balance": 10000,
+            "accountType": "savings",
+            "description": "My savings account for holiday"
+        },
+        {
+            "id": "08544aa9-ba48-4fe0-b9a5-3d25e73c9bb0",
+            "ownerId": 1,
+            "currency": "USD",
+            "balance": 5000,
+            "accountType": "currency",
+            "description": "USD currency investment account"
+        },
+        {
+            "id": "0f844aa6-03a4-4059-8d80-9990903edfa8",
+            "ownerId": 1,
+            "currency": "GBP",
+            "balance": 3000,
+            "accountType": "salary",
+            "description": "My company salary account"
+        }
+    ],
+    "currencyConversion": {
+        "USD": {
+            "EUR": 0.92,
+            "GBP": 0.79
+        },
+        "EUR": {
+            "USD": 1.08,
+            "GBP": 0.86
+        },
+        "GBP": {
+            "USD": 1.26,
+            "EUR": 1.16
+        }
     }
-  ]
 }

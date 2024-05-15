@@ -6,6 +6,7 @@ import UsdIcon from "@/assets/icons/usd.svg";
 import EurIcon from "@/assets/icons/eur.svg";
 import GbpIcon from "@/assets/icons/gbp.svg";
 import { Currency } from "@/components/BankAccountCard/types";
+import { DEFAULT_CURRENCY } from "@/components/CurrencySelector/constants";
 
 const currencyIcons: { [key in Currency]: ReactNode } = {
     USD: <UsdIcon className='h-4 w-4 me-2' />,
@@ -13,13 +14,20 @@ const currencyIcons: { [key in Currency]: ReactNode } = {
     GBP: <GbpIcon className='h-4 w-4 me-2' />,
 };
 
-const CurrencySelector = () => {
-    const [currency, setCurrency] = useState<Currency>("USD");
+const CurrencySelector = ({
+    onChange,
+}: {
+    onChange: (currency: Currency) => void;
+}) => {
+    const [currency, setCurrency] = useState<Currency>(DEFAULT_CURRENCY);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const onClickCurrency = (currency: Currency) => {
         setCurrency(currency);
         toggleDropdown();
+
+        // Callback
+        onChange(currency);
     };
 
     const toggleDropdown = () => setIsDropdownOpen((prevState) => !prevState);
