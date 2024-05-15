@@ -13,8 +13,6 @@ export default async function TransferPage() {
         // TODO show error message
     }
 
-    console.log(currencyConversion);
-
     return (
         <section className='m-2 flex flex-col items-center'>
             <div className='w-96'>
