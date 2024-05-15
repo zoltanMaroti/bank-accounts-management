@@ -3,8 +3,9 @@
 import React from "react";
 import MoneyIcon from "@/assets/icons/money.svg";
 import CurrencySelector from "@/components/CurrencySelector/CurrencySelector";
+import { BankAccount } from "@/components/BankAccountCard/types";
 
-const TransferFundsForm = () => {
+const TransferFundsForm = ({ accounts }: { accounts: BankAccount[] }) => {
     return (
         <form className='relative bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'>
             <h1 className='flex-1 text-xl font-bold text-center'>
