@@ -44,7 +44,7 @@ const CurrencySelector = ({
     };
 
     return (
-        <>
+        <div>
             <button
                 type='button'
                 onClick={toggleDropdown}
@@ -56,7 +56,7 @@ const CurrencySelector = ({
             </button>
 
             {isDropdownOpen ? (
-                <div className='absolute top-40 right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-36'>
+                <div className='absolute right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-36'>
                     <ul className='py-2 text-sm text-gray-700'>
                         <li>
                             <button
@@ -97,7 +97,7 @@ const CurrencySelector = ({
                     </ul>
                 </div>
             ) : null}
-        </>
+        </div>
     );
 };
 

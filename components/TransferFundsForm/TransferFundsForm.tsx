@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useMemo, ChangeEvent, useTransition } from "react";
+import React, { useState, useMemo, useTransition, useCallback } from "react";
 import MoneyIcon from "@/assets/icons/money.svg";
 import CurrencySelector from "@/components/CurrencySelector/CurrencySelector";
 import { BankAccount, Currency } from "@/components/BankAccountCard/types";
-import Select from "@/components/Select/Select";
 import {
     CurrencyConversion,
     TransferFundsFormValues,
@@ -16,6 +15,8 @@ import {
     getCurrencyMultiplier,
     hasSufficientFunds,
 } from "@/components/TransferFundsForm/utils";
+import BankAccountSelector from "@/components/BankAccountSelector/BankAccountSelector";
+import { twMerge } from "tailwind-merge";
 
 const TransferFundsForm = ({
     accounts,
@@ -26,29 +27,34 @@ const TransferFundsForm = ({
 }) => {
     const {
         register,
+        control,
         setValue: setFormValue,
         handleSubmit,
         formState: { errors },
     } = useForm<TransferFundsFormValues>();
 
     const [isPending, startTransition] = useTransition();
-    const [amountToTransfer, setAmountToTransfer] = useState<number>(0);
     const [sourceAccountId, setSourceAccountId] = useState<string>();
     const [destinationAccountId, setDestinationAccountId] = useState<string>();
     const [selectedCurrency, setSelectedCurrency] =
         useState<Currency>(DEFAULT_CURRENCY);
 
-    const onChangeSourceAccount = (e: ChangeEvent<HTMLSelectElement>) =>
-        setSourceAccountId(e.target.value);
+    const onChangeSourceAccount = useCallback(
+        (id: string) => {
+            setSourceAccountId(id);
+            setDestinationAccountId(undefined);
+            setFormValue("destinationAccountId", "");
+        },
+        [setFormValue]
+    );
 
-    const onChangeDestinationAccount = (e: ChangeEvent<HTMLSelectElement>) =>
-        setDestinationAccountId(e.target.value);
+    const onChangeDestinationAccount = useCallback((id: string) => {
+        setDestinationAccountId(id);
+    }, []);
 
-    const onChangeCurrency = (currency: Currency) =>
+    const onChangeCurrency = useCallback((currency: Currency) => {
         setSelectedCurrency(currency);
-
-    const onChangeAmount = (e: ChangeEvent<HTMLInputElement>) =>
-        setAmountToTransfer(+e.target.value);
+    }, []);
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
         startTransition(() => {
@@ -66,11 +72,6 @@ const TransferFundsForm = ({
         [accounts, sourceAccountId]
     );
 
-    const showCurrencyConversion =
-        selectedCurrency &&
-        sourceAccount &&
-        selectedCurrency !== sourceAccount.currency;
-
     const currencyMultiplier = getCurrencyMultiplier(
         currencyConversion,
         sourceAccount?.currency,
@@ -82,10 +83,10 @@ const TransferFundsForm = ({
         currencyMultiplier
     );
 
-    console.log(
-        `${sourceAccount?.balance} ${sourceAccount?.currency} in ${selectedCurrency}`,
-        currencyConvertedBalance
-    );
+    const showCurrencyConversion =
+        selectedCurrency &&
+        sourceAccount &&
+        selectedCurrency !== sourceAccount.currency;
 
     return (
         <form
@@ -95,47 +96,38 @@ const TransferFundsForm = ({
             <h1 className='flex-1 text-xl font-bold text-center'>
                 Transfer funds
             </h1>
-            <p>Deposit funds into an account</p>
+            <p className='text-center'>Deposit funds into an account</p>
             <hr className='border mb-2' />
 
-            <Select
-                id='from'
+            <BankAccountSelector
                 label='Transfer from'
-                hasError={false}
-                errorMessage={""}
+                name='sourceAccountId'
+                control={control}
+                accounts={accounts}
+                hasError={!!errors?.sourceAccountId}
                 onChange={onChangeSourceAccount}
-            >
-                <option value=''>Please choose an option</option>
-                {accounts.map((account) => (
-                    <option key={account.id} value={account.id}>
-                        {account.accountType} - {account.description}
-                    </option>
-                ))}
-            </Select>
+            />
 
             {sourceAccountId ? (
-                <Select
-                    id='from'
+                <BankAccountSelector
+                    id={sourceAccountId}
                     label='Transfer to'
-                    hasError={false}
-                    errorMessage={""}
+                    name='destinationAccountId'
+                    control={control}
+                    accounts={eligibleDestinationAccounts}
+                    hasError={!!errors?.destinationAccountId}
                     onChange={onChangeDestinationAccount}
-                >
-                    <option value=''>Please choose an option</option>
-                    {eligibleDestinationAccounts.map((account) => (
-                        <option key={account.id} value={account.id}>
-                            {account.currency}: {account.accountType} -{" "}
-                            {account.description}
-                        </option>
-                    ))}
-                </Select>
+                />
             ) : null}
 
             {destinationAccountId ? (
                 <div>
                     <label
-                        htmlFor={""}
-                        className='block mb-2 text-sm text-gray-900'
+                        htmlFor='amountToTransfer'
+                        className={twMerge(
+                            "block mb-2 text-sm text-gray-900",
+                            errors?.amountToTransfer && "text-red-700"
+                        )}
                     >
                         Enter amount
                     </label>
@@ -144,10 +136,14 @@ const TransferFundsForm = ({
                             <div className='absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none'>
                                 <MoneyIcon className='w-4 h-4 text-gray-500' />
                             </div>
-
                             <input
+                                id='amountToTransfer'
                                 type='number'
-                                className='block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-50'
+                                className={twMerge(
+                                    "block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-r-0 border-gray-300 focus:ring-blue-500 focus:border-blue-50",
+                                    errors?.amountToTransfer &&
+                                        "border-red-700 border-r-1 focus:ring-red-700 focus:border-red-700 outline-none"
+                                )}
                                 placeholder='Enter amount'
                                 {...register("amountToTransfer", {
                                     required: {
@@ -159,11 +155,12 @@ const TransferFundsForm = ({
                                         selectedCurrency
                                     ),
                                 })}
-                                onChange={onChangeAmount}
                             />
                         </div>
+
                         <CurrencySelector onChange={onChangeCurrency} />
                     </div>
+
                     {errors?.amountToTransfer ? (
                         <label className='block mt-2 text-sm text-red-700'>
                             {errors?.amountToTransfer.message}
