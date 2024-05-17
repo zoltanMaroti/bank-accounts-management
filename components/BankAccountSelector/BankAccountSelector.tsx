@@ -16,6 +16,7 @@ const BankAccountSelector = ({
     accounts,
     hasError,
     onChange,
+    defaultValue,
 }: {
     id?: string;
     name: keyof TransferFundsFormValues;
@@ -24,6 +25,7 @@ const BankAccountSelector = ({
     accounts: BankAccount[];
     hasError: boolean;
     onChange: (id: string) => void;
+    defaultValue?: SingleValue<BankAccountOption>;
 }) => {
     const [value, setValue] = useState();
 
@@ -81,6 +83,7 @@ const BankAccountSelector = ({
                         {...field}
                         key={id}
                         value={value}
+                        defaultValue={defaultValue}
                         classNames={{
                             control: () =>
                                 hasError

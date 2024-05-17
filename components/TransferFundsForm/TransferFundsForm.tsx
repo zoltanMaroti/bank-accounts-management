@@ -25,6 +25,7 @@ import Button from "@/components/Button/Button";
 import Stepper from "@/components/Stepper/Stepper";
 import { useStepper } from "@/components/Stepper/hooks";
 import { steps } from "@/components/Stepper/constants";
+import ReviewTransfer from "./components/ReviewTransfer";
 
 const TransferFundsForm = ({
     accounts,
@@ -88,6 +89,11 @@ const TransferFundsForm = ({
         [accounts, sourceAccountId]
     );
 
+    const targetAccount = useMemo(
+        () => accounts.find((account) => account.id === targetAccountId),
+        [accounts, targetAccountId]
+    );
+
     const currencyMultiplier = getCurrencyMultiplier(
         currencyConversion,
         sourceAccount?.currency,
@@ -124,6 +130,7 @@ const TransferFundsForm = ({
                             accounts={accounts}
                             hasError={!!errors?.sourceAccountId}
                             onChange={onChangeSourceAccount}
+                            defaultValue={sourceAccount}
                         />
 
                         {sourceAccountId && (
@@ -135,6 +142,7 @@ const TransferFundsForm = ({
                                 accounts={eligibleTargetAccounts}
                                 hasError={!!errors?.destinationAccountId}
                                 onChange={onChangeDestinationAccount}
+                                defaultValue={targetAccount}
                             />
                         )}
 
@@ -193,6 +201,13 @@ const TransferFundsForm = ({
                             />
                         )}
                     </>
+                )}
+
+                {currentStep === 1 && sourceAccount && targetAccount && (
+                    <ReviewTransfer
+                        sourceAccount={sourceAccount}
+                        targetAccount={targetAccount}
+                    />
                 )}
 
                 <Button type='button' onClick={nextStep}>
