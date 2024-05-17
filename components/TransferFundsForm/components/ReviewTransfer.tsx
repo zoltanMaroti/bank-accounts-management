@@ -8,12 +8,12 @@ import Label from "@/components/Label/Label";
 const ReviewTransfer = ({
     sourceAccount,
     targetAccount,
-    amountToTransfer,
+    targetAmount,
     targetCurrency,
 }: {
     sourceAccount: BankAccount;
     targetAccount: BankAccount;
-    amountToTransfer: number;
+    targetAmount: number;
     targetCurrency: Currency;
 }) => {
     return (
@@ -35,7 +35,7 @@ const ReviewTransfer = ({
             </div>
             <div>
                 <p className='text-3xl text-center mb-2'>
-                    {formatCurrency(targetCurrency, amountToTransfer)}
+                    {formatCurrency(targetCurrency, targetAmount)}
                 </p>
                 <div className='flex flex-col gap-3 bg-gray-100 p-3 rounded-md'>
                     <div>

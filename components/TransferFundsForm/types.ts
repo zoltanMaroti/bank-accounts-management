@@ -7,7 +7,7 @@ export type CurrencyConversion = {
 };
 
 export type TransferFundsFormValues = {
-    amountToTransfer: number;
     sourceAccountId: string;
     targetAccountId: string;
+    targetAmount: number;
 };

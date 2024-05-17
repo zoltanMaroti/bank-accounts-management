@@ -58,7 +58,7 @@ const TransferFundsForm = ({
     const [targetAccountId, setTargetAccountId] = useState<string>();
     const [targetCurrency, setTargetCurrency] =
         useState<Currency>(DEFAULT_CURRENCY);
-    const [amountToTransfer, setAmountToTransfer] = useState<number>();
+    const [targetAmount, setTargetAmount] = useState<number>();
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
         startTransition(() => {
@@ -95,11 +95,11 @@ const TransferFundsForm = ({
         setTargetCurrency(currency);
     }, []);
 
-    const onChangeAmountToTransfer: ChangeEventHandler<HTMLInputElement> =
+    const onChangeTargetAmount: ChangeEventHandler<HTMLInputElement> =
         useCallback(
             (e: ChangeEvent<HTMLInputElement>) => {
-                setAmountToTransfer(+e.target.value);
-                clearErrors("amountToTransfer");
+                setTargetAmount(+e.target.value);
+                clearErrors("targetAmount");
             },
             [clearErrors]
         );
@@ -136,7 +136,7 @@ const TransferFundsForm = ({
         targetCurrency !== sourceAccount.currency;
 
     const showReviewTransfer =
-        isLastStep && sourceAccount && targetAccount && amountToTransfer;
+        isLastStep && sourceAccount && targetAccount && targetAmount;
 
     return (
         <section className='relative bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'>
@@ -177,9 +177,9 @@ const TransferFundsForm = ({
                         {targetAccountId && (
                             <div>
                                 <Label
-                                    htmlFor='amountToTransfer'
+                                    htmlFor='targetAmount'
                                     label='Enter amount'
-                                    hasError={!!errors?.amountToTransfer}
+                                    hasError={!!errors?.targetAmount}
                                 />
                                 <div className='w-full mx-auto flex'>
                                     <div className='relative w-full'>
@@ -187,16 +187,16 @@ const TransferFundsForm = ({
                                             <MoneyIcon className='w-4 h-4 text-gray-500' />
                                         </div>
                                         <input
-                                            id='amountToTransfer'
+                                            id='targetAmount'
                                             type='number'
                                             min={MINIMUM_TRANSFER_AMOUNT}
                                             className={twMerge(
                                                 "block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-r-0 border-gray-300 focus:ring-blue-500 focus:border-blue-50",
-                                                errors?.amountToTransfer &&
+                                                errors?.targetAmount &&
                                                     "border-red-700 border-r-1 focus:ring-red-700 focus:border-red-700 outline-none"
                                             )}
                                             placeholder='Enter amount'
-                                            {...register("amountToTransfer", {
+                                            {...register("targetAmount", {
                                                 required: {
                                                     value: true,
                                                     message:
@@ -214,7 +214,7 @@ const TransferFundsForm = ({
                                                     targetCurrency
                                                 ),
                                             })}
-                                            onChange={onChangeAmountToTransfer}
+                                            onChange={onChangeTargetAmount}
                                         />
                                     </div>
                                     <CurrencySelector
@@ -223,9 +223,9 @@ const TransferFundsForm = ({
                                 </div>
 
                                 <ErrorMessage
-                                    htmlFor='amountToTransfer'
-                                    hasError={!!errors?.amountToTransfer}
-                                    message={errors?.amountToTransfer?.message}
+                                    htmlFor='targetAmount'
+                                    hasError={!!errors?.targetAmount}
+                                    message={errors?.targetAmount?.message}
                                 />
                             </div>
                         )}
@@ -244,7 +244,7 @@ const TransferFundsForm = ({
                     <ReviewTransfer
                         sourceAccount={sourceAccount}
                         targetAccount={targetAccount}
-                        amountToTransfer={amountToTransfer}
+                        targetAmount={targetAmount}
                         targetCurrency={targetCurrency}
                     />
                 )}
