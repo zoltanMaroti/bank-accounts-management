@@ -6,6 +6,7 @@ import React, {
     useTransition,
     useCallback,
     ChangeEventHandler,
+    ChangeEvent,
 } from "react";
 import MoneyIcon from "@/assets/icons/money.svg";
 import CurrencySelector from "@/components/CurrencySelector/CurrencySelector";
@@ -33,6 +34,7 @@ import { useStepper } from "@/components/Stepper/hooks";
 import { steps } from "@/components/Stepper/constants";
 import ReviewTransfer from "@/components/TransferFundsForm/components/ReviewTransfer";
 import { formatCurrency } from "../BankAccountCard/utils";
+import { MINIMUM_TRANSFER_AMOUNT } from "@/components/TransferFundsForm/constants";
 
 const TransferFundsForm = ({
     accounts,
@@ -46,6 +48,7 @@ const TransferFundsForm = ({
         control,
         trigger,
         setValue: setFormValue,
+        clearErrors,
         handleSubmit,
         formState: { errors },
     } = useForm<TransferFundsFormValues>();
@@ -74,23 +77,32 @@ const TransferFundsForm = ({
         (id: string) => {
             setSourceAccountId(id);
             setTargetAccountId(undefined);
-            setFormValue("destinationAccountId", "");
+            setFormValue("targetAccountId", "");
+            clearErrors("sourceAccountId");
         },
-        [setFormValue]
+        [setFormValue, clearErrors]
     );
 
-    const onChangeDestinationAccount = useCallback((id: string) => {
-        setTargetAccountId(id);
-    }, []);
+    const onChangeTargetAccount = useCallback(
+        (id: string) => {
+            setTargetAccountId(id);
+            clearErrors("targetAccountId");
+        },
+        [clearErrors]
+    );
 
     const onChangeCurrency = useCallback((currency: Currency) => {
         setTargetCurrency(currency);
     }, []);
 
     const onChangeAmountToTransfer: ChangeEventHandler<HTMLInputElement> =
-        useCallback((e) => {
-            setAmountToTransfer(+e.target.value);
-        }, []);
+        useCallback(
+            (e: ChangeEvent<HTMLInputElement>) => {
+                setAmountToTransfer(+e.target.value);
+                clearErrors("amountToTransfer");
+            },
+            [clearErrors]
+        );
 
     const eligibleTargetAccounts = useMemo(
         () => accounts.filter((account) => account.id !== sourceAccountId),
@@ -153,11 +165,11 @@ const TransferFundsForm = ({
                             <BankAccountSelector
                                 id={sourceAccountId}
                                 label='Transfer to'
-                                name='destinationAccountId'
+                                name='targetAccountId'
                                 control={control}
                                 accounts={eligibleTargetAccounts}
-                                hasError={!!errors?.destinationAccountId}
-                                onChange={onChangeDestinationAccount}
+                                hasError={!!errors?.targetAccountId}
+                                onChange={onChangeTargetAccount}
                                 defaultValue={targetAccount}
                             />
                         )}
@@ -177,7 +189,7 @@ const TransferFundsForm = ({
                                         <input
                                             id='amountToTransfer'
                                             type='number'
-                                            min={1}
+                                            min={MINIMUM_TRANSFER_AMOUNT}
                                             className={twMerge(
                                                 "block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-r-0 border-gray-300 focus:ring-blue-500 focus:border-blue-50",
                                                 errors?.amountToTransfer &&
@@ -191,10 +203,10 @@ const TransferFundsForm = ({
                                                         "This field is required",
                                                 },
                                                 min: {
-                                                    value: 1,
+                                                    value: MINIMUM_TRANSFER_AMOUNT,
                                                     message: `The minimum transfer amount is ${formatCurrency(
                                                         targetCurrency,
-                                                        1
+                                                        MINIMUM_TRANSFER_AMOUNT
                                                     )}`,
                                                 },
                                                 validate: hasSufficientFunds(

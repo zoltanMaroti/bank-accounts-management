@@ -9,5 +9,5 @@ export type CurrencyConversion = {
 export type TransferFundsFormValues = {
     amountToTransfer: number;
     sourceAccountId: string;
-    destinationAccountId: string;
+    targetAccountId: string;
 };
