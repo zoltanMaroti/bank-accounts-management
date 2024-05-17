@@ -32,6 +32,7 @@ import Stepper from "@/components/Stepper/Stepper";
 import { useStepper } from "@/components/Stepper/hooks";
 import { steps } from "@/components/Stepper/constants";
 import ReviewTransfer from "@/components/TransferFundsForm/components/ReviewTransfer";
+import { formatCurrency } from "../BankAccountCard/utils";
 
 const TransferFundsForm = ({
     accounts,
@@ -176,6 +177,7 @@ const TransferFundsForm = ({
                                         <input
                                             id='amountToTransfer'
                                             type='number'
+                                            min={1}
                                             className={twMerge(
                                                 "block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-r-0 border-gray-300 focus:ring-blue-500 focus:border-blue-50",
                                                 errors?.amountToTransfer &&
@@ -187,6 +189,13 @@ const TransferFundsForm = ({
                                                     value: true,
                                                     message:
                                                         "This field is required",
+                                                },
+                                                min: {
+                                                    value: 1,
+                                                    message: `The minimum transfer amount is ${formatCurrency(
+                                                        targetCurrency,
+                                                        1
+                                                    )}`,
                                                 },
                                                 validate: hasSufficientFunds(
                                                     currencyConvertedBalance,
