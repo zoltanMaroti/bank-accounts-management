@@ -5,7 +5,8 @@ import { BankAccount, Currency } from "@/components/BankAccountCard/types";
 import { BankAccountOption } from "@/components/BankAccountSelector/types";
 import { formatCurrency } from "@/components/BankAccountCard/utils";
 import { TransferFundsFormValues } from "@/components/TransferFundsForm/types";
-import { twMerge } from "tailwind-merge";
+import Label from "@/components/Label/Label";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 
 const BankAccountSelector = ({
     id,
@@ -70,15 +71,7 @@ const BankAccountSelector = ({
 
     return (
         <div>
-            <label
-                className={twMerge(
-                    "block mb-2 text-sm text-gray-900",
-                    hasError && "text-red-700"
-                )}
-            >
-                {label}
-            </label>
-
+            <Label htmlFor={name} label={label} hasError={hasError} />
             <Controller
                 name={name}
                 control={control}
@@ -115,11 +108,11 @@ const BankAccountSelector = ({
                     />
                 )}
             />
-            {hasError ? (
-                <label className='block mt-2 text-sm text-red-700'>
-                    This field is required
-                </label>
-            ) : null}
+            <ErrorMessage
+                htmlFor={name}
+                hasError={hasError}
+                message='This field is required'
+            />
         </div>
     );
 };
