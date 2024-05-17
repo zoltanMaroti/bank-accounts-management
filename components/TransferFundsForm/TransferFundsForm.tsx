@@ -22,6 +22,9 @@ import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import CurrencyConversionInfo from "@/components/TransferFundsForm/components/CurrencyConversionInfo";
 import Title from "@/components/Title/Title";
 import Button from "@/components/Button/Button";
+import Stepper from "@/components/Stepper/Stepper";
+import { useStepper } from "@/components/Stepper/hooks";
+import { steps } from "@/components/Stepper/constants";
 
 const TransferFundsForm = ({
     accounts,
@@ -33,6 +36,7 @@ const TransferFundsForm = ({
     const {
         register,
         control,
+        trigger,
         setValue: setFormValue,
         handleSubmit,
         formState: { errors },
@@ -43,6 +47,19 @@ const TransferFundsForm = ({
     const [targetAccountId, setTargetAccountId] = useState<string>();
     const [targetCurrency, setTargetCurrency] =
         useState<Currency>(DEFAULT_CURRENCY);
+
+    const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
+        startTransition(() => {
+            console.log(data);
+        });
+    };
+
+    const { currentStep, previousStep, nextStep, isFirstStep, isLastStep } =
+        useStepper({
+            steps,
+            trigger,
+            callback: handleSubmit(onSubmit),
+        });
 
     const onChangeSourceAccount = useCallback(
         (id: string) => {
@@ -60,12 +77,6 @@ const TransferFundsForm = ({
     const onChangeCurrency = useCallback((currency: Currency) => {
         setTargetCurrency(currency);
     }, []);
-
-    const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
-        startTransition(() => {
-            console.log(data);
-        });
-    };
 
     const eligibleTargetAccounts = useMemo(
         () => accounts.filter((account) => account.id !== sourceAccountId),
@@ -95,89 +106,104 @@ const TransferFundsForm = ({
 
     return (
         <section className='relative bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'>
+            <Stepper steps={steps} currentStep={currentStep} />
             <Title
                 title='Transfer funds'
                 subTitle='Deposit funds into an account'
             />
-
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className='flex flex-col gap-3'
             >
-                <BankAccountSelector
-                    label='Transfer from'
-                    name='sourceAccountId'
-                    control={control}
-                    accounts={accounts}
-                    hasError={!!errors?.sourceAccountId}
-                    onChange={onChangeSourceAccount}
-                />
-
-                {sourceAccountId && (
-                    <BankAccountSelector
-                        id={sourceAccountId}
-                        label='Transfer to'
-                        name='destinationAccountId'
-                        control={control}
-                        accounts={eligibleTargetAccounts}
-                        hasError={!!errors?.destinationAccountId}
-                        onChange={onChangeDestinationAccount}
-                    />
-                )}
-
-                {targetAccountId && (
-                    <div>
-                        <Label
-                            htmlFor='amountToTransfer'
-                            label='Enter amount'
-                            hasError={!!errors?.amountToTransfer}
+                {currentStep === 0 && (
+                    <>
+                        <BankAccountSelector
+                            label='Transfer from'
+                            name='sourceAccountId'
+                            control={control}
+                            accounts={accounts}
+                            hasError={!!errors?.sourceAccountId}
+                            onChange={onChangeSourceAccount}
                         />
-                        <div className='w-full mx-auto flex'>
-                            <div className='relative w-full'>
-                                <div className='absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none'>
-                                    <MoneyIcon className='w-4 h-4 text-gray-500' />
+
+                        {sourceAccountId && (
+                            <BankAccountSelector
+                                id={sourceAccountId}
+                                label='Transfer to'
+                                name='destinationAccountId'
+                                control={control}
+                                accounts={eligibleTargetAccounts}
+                                hasError={!!errors?.destinationAccountId}
+                                onChange={onChangeDestinationAccount}
+                            />
+                        )}
+
+                        {targetAccountId && (
+                            <div>
+                                <Label
+                                    htmlFor='amountToTransfer'
+                                    label='Enter amount'
+                                    hasError={!!errors?.amountToTransfer}
+                                />
+                                <div className='w-full mx-auto flex'>
+                                    <div className='relative w-full'>
+                                        <div className='absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none'>
+                                            <MoneyIcon className='w-4 h-4 text-gray-500' />
+                                        </div>
+                                        <input
+                                            id='amountToTransfer'
+                                            type='number'
+                                            className={twMerge(
+                                                "block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-r-0 border-gray-300 focus:ring-blue-500 focus:border-blue-50",
+                                                errors?.amountToTransfer &&
+                                                    "border-red-700 border-r-1 focus:ring-red-700 focus:border-red-700 outline-none"
+                                            )}
+                                            placeholder='Enter amount'
+                                            {...register("amountToTransfer", {
+                                                required: {
+                                                    value: true,
+                                                    message:
+                                                        "This field is required",
+                                                },
+                                                validate: hasSufficientFunds(
+                                                    currencyConvertedBalance,
+                                                    targetCurrency
+                                                ),
+                                            })}
+                                        />
+                                    </div>
+                                    <CurrencySelector
+                                        onChange={onChangeCurrency}
+                                    />
                                 </div>
-                                <input
-                                    id='amountToTransfer'
-                                    type='number'
-                                    className={twMerge(
-                                        "block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-r-0 border-gray-300 focus:ring-blue-500 focus:border-blue-50",
-                                        errors?.amountToTransfer &&
-                                            "border-red-700 border-r-1 focus:ring-red-700 focus:border-red-700 outline-none"
-                                    )}
-                                    placeholder='Enter amount'
-                                    {...register("amountToTransfer", {
-                                        required: {
-                                            value: true,
-                                            message: "This field is required",
-                                        },
-                                        validate: hasSufficientFunds(
-                                            currencyConvertedBalance,
-                                            targetCurrency
-                                        ),
-                                    })}
+
+                                <ErrorMessage
+                                    htmlFor='amountToTransfer'
+                                    hasError={!!errors?.amountToTransfer}
+                                    message={errors?.amountToTransfer?.message}
                                 />
                             </div>
-                            <CurrencySelector onChange={onChangeCurrency} />
-                        </div>
+                        )}
 
-                        <ErrorMessage
-                            htmlFor='amountToTransfer'
-                            hasError={!!errors?.amountToTransfer}
-                            message={errors?.amountToTransfer?.message}
-                        />
-                    </div>
+                        {showCurrencyConversion && (
+                            <CurrencyConversionInfo
+                                sourceCurrency={sourceAccount?.currency}
+                                targetCurrency={targetCurrency}
+                                multiplier={currencyMultiplier}
+                            />
+                        )}
+                    </>
                 )}
 
-                {showCurrencyConversion && (
-                    <CurrencyConversionInfo
-                        sourceCurrency={sourceAccount?.currency}
-                        targetCurrency={targetCurrency}
-                        multiplier={currencyMultiplier}
-                    />
-                )}
+                <Button type='button' onClick={nextStep}>
+                    {isLastStep ? "Transfer" : "Continue"}
+                </Button>
 
-                <Button type='submit'>Continue</Button>
+                {!isFirstStep && (
+                    <button type='button' onClick={previousStep}>
+                        Back
+                    </button>
+                )}
             </form>
         </section>
     );
