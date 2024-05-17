@@ -25,7 +25,7 @@ import Button from "@/components/Button/Button";
 import Stepper from "@/components/Stepper/Stepper";
 import { useStepper } from "@/components/Stepper/hooks";
 import { steps } from "@/components/Stepper/constants";
-import ReviewTransfer from "./components/ReviewTransfer";
+import ReviewTransfer from "@/components/TransferFundsForm/components/ReviewTransfer";
 
 const TransferFundsForm = ({
     accounts,
