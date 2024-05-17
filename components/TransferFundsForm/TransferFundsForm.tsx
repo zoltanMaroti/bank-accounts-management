@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useMemo, useTransition, useCallback } from "react";
+import React, {
+    useState,
+    useMemo,
+    useTransition,
+    useCallback,
+    ChangeEventHandler,
+} from "react";
 import MoneyIcon from "@/assets/icons/money.svg";
 import CurrencySelector from "@/components/CurrencySelector/CurrencySelector";
 import { BankAccount, Currency } from "@/components/BankAccountCard/types";
@@ -48,6 +54,7 @@ const TransferFundsForm = ({
     const [targetAccountId, setTargetAccountId] = useState<string>();
     const [targetCurrency, setTargetCurrency] =
         useState<Currency>(DEFAULT_CURRENCY);
+    const [amountToTransfer, setAmountToTransfer] = useState<number>();
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
         startTransition(() => {
@@ -78,6 +85,11 @@ const TransferFundsForm = ({
     const onChangeCurrency = useCallback((currency: Currency) => {
         setTargetCurrency(currency);
     }, []);
+
+    const onChangeAmountToTransfer: ChangeEventHandler<HTMLInputElement> =
+        useCallback((e) => {
+            setAmountToTransfer(+e.target.value);
+        }, []);
 
     const eligibleTargetAccounts = useMemo(
         () => accounts.filter((account) => account.id !== sourceAccountId),
@@ -110,6 +122,9 @@ const TransferFundsForm = ({
         targetCurrency &&
         targetCurrency !== sourceAccount.currency;
 
+    const showReviewTransfer =
+        isLastStep && sourceAccount && targetAccount && amountToTransfer;
+
     return (
         <section className='relative bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'>
             <Stepper steps={steps} currentStep={currentStep} />
@@ -121,7 +136,7 @@ const TransferFundsForm = ({
                 onSubmit={handleSubmit(onSubmit)}
                 className='flex flex-col gap-3'
             >
-                {currentStep === 0 && (
+                {isFirstStep && (
                     <>
                         <BankAccountSelector
                             label='Transfer from'
@@ -178,6 +193,7 @@ const TransferFundsForm = ({
                                                     targetCurrency
                                                 ),
                                             })}
+                                            onChange={onChangeAmountToTransfer}
                                         />
                                     </div>
                                     <CurrencySelector
@@ -203,10 +219,12 @@ const TransferFundsForm = ({
                     </>
                 )}
 
-                {currentStep === 1 && sourceAccount && targetAccount && (
+                {showReviewTransfer && (
                     <ReviewTransfer
                         sourceAccount={sourceAccount}
                         targetAccount={targetAccount}
+                        amountToTransfer={amountToTransfer}
+                        targetCurrency={targetCurrency}
                     />
                 )}
 
