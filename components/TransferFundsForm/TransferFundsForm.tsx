@@ -47,18 +47,18 @@ const TransferFundsForm = ({
         register,
         control,
         trigger,
-        setValue: setFormValue,
         clearErrors,
         handleSubmit,
+        resetField,
         formState: { errors },
     } = useForm<TransferFundsFormValues>();
 
     const [isPending, startTransition] = useTransition();
     const [sourceAccountId, setSourceAccountId] = useState<string>();
     const [targetAccountId, setTargetAccountId] = useState<string>();
+    const [targetAmount, setTargetAmount] = useState<number>();
     const [targetCurrency, setTargetCurrency] =
         useState<Currency>(DEFAULT_CURRENCY);
-    const [targetAmount, setTargetAmount] = useState<number>();
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
         startTransition(() => {
@@ -73,17 +73,19 @@ const TransferFundsForm = ({
             callback: handleSubmit(onSubmit),
         });
 
-    const onChangeSourceAccount = useCallback(
+    const onChangeSourceAccountId = useCallback(
         (id: string) => {
             setSourceAccountId(id);
             setTargetAccountId(undefined);
-            setFormValue("targetAccountId", "");
             clearErrors("sourceAccountId");
+
+            // Reset target account id to prevent selecting the source as target
+            resetField("targetAccountId");
         },
-        [setFormValue, clearErrors]
+        [resetField, clearErrors]
     );
 
-    const onChangeTargetAccount = useCallback(
+    const onChangeTargetAccountId = useCallback(
         (id: string) => {
             setTargetAccountId(id);
             clearErrors("targetAccountId");
@@ -91,7 +93,7 @@ const TransferFundsForm = ({
         [clearErrors]
     );
 
-    const onChangeCurrency = useCallback((currency: Currency) => {
+    const onChangeTargetCurrency = useCallback((currency: Currency) => {
         setTargetCurrency(currency);
     }, []);
 
@@ -157,7 +159,7 @@ const TransferFundsForm = ({
                             control={control}
                             accounts={accounts}
                             hasError={!!errors?.sourceAccountId}
-                            onChange={onChangeSourceAccount}
+                            onChange={onChangeSourceAccountId}
                             defaultValue={sourceAccount}
                         />
 
@@ -169,7 +171,7 @@ const TransferFundsForm = ({
                                 control={control}
                                 accounts={eligibleTargetAccounts}
                                 hasError={!!errors?.targetAccountId}
-                                onChange={onChangeTargetAccount}
+                                onChange={onChangeTargetAccountId}
                                 defaultValue={targetAccount}
                             />
                         )}
@@ -218,7 +220,7 @@ const TransferFundsForm = ({
                                         />
                                     </div>
                                     <CurrencySelector
-                                        onChange={onChangeCurrency}
+                                        onChange={onChangeTargetCurrency}
                                     />
                                 </div>
 
