@@ -20,7 +20,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import {
     convertBalanceToCurrency,
     getCurrencyMultiplier,
-    hasSufficientFunds,
 } from "@/components/TransferFundsForm/utils";
 import BankAccountSelector from "@/components/BankAccountSelector/BankAccountSelector";
 import { twMerge } from "tailwind-merge";
@@ -33,8 +32,8 @@ import Stepper from "@/components/Stepper/Stepper";
 import { useStepper } from "@/components/Stepper/hooks";
 import { steps } from "@/components/Stepper/constants";
 import ReviewTransfer from "@/components/TransferFundsForm/components/ReviewTransfer";
-import { formatCurrency } from "../BankAccountCard/utils";
 import { MINIMUM_TRANSFER_AMOUNT } from "@/components/TransferFundsForm/constants";
+import { validateTargetAmount } from "@/components/TransferFundsForm/validation";
 
 const TransferFundsForm = ({
     accounts,
@@ -198,24 +197,13 @@ const TransferFundsForm = ({
                                                     "border-red-700 border-r-1 focus:ring-red-700 focus:border-red-700 outline-none"
                                             )}
                                             placeholder='Enter amount'
-                                            {...register("targetAmount", {
-                                                required: {
-                                                    value: true,
-                                                    message:
-                                                        "This field is required",
-                                                },
-                                                min: {
-                                                    value: MINIMUM_TRANSFER_AMOUNT,
-                                                    message: `The minimum transfer amount is ${formatCurrency(
-                                                        targetCurrency,
-                                                        MINIMUM_TRANSFER_AMOUNT
-                                                    )}`,
-                                                },
-                                                validate: hasSufficientFunds(
-                                                    currencyConvertedBalance,
-                                                    targetCurrency
-                                                ),
-                                            })}
+                                            {...register(
+                                                "targetAmount",
+                                                validateTargetAmount(
+                                                    targetCurrency,
+                                                    currencyConvertedBalance
+                                                )
+                                            )}
                                             onChange={onChangeTargetAmount}
                                         />
                                     </div>
