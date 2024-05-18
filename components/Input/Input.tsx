@@ -1,5 +1,7 @@
 import React, { forwardRef, InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
+import Label from "@/components/Label/Label";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
@@ -11,15 +13,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ name, type, label, hasError, errorMessage, ...props }, ref) => {
         return (
             <div>
-                <label
-                    htmlFor={name}
-                    className={twMerge(
-                        "block mb-2 text-sm text-gray-900",
-                        hasError && "text-red-700"
-                    )}
-                >
-                    {label}
-                </label>
+                <Label htmlFor={name} label={label} hasError={hasError} />
                 <input
                     name={name}
                     type={type}
@@ -31,14 +25,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     ref={ref}
                     {...props}
                 />
-                {hasError && errorMessage ? (
-                    <label
-                        htmlFor={name}
-                        className='block mt-2 text-sm text-red-700'
-                    >
-                        {errorMessage}
-                    </label>
-                ) : null}
+                <ErrorMessage
+                    htmlFor={name}
+                    hasError={hasError || false}
+                    message={errorMessage}
+                />
             </div>
         );
     }

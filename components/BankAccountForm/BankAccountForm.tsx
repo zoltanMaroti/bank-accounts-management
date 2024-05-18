@@ -17,6 +17,8 @@ import { BankAccount } from "@/components/BankAccountCard/types";
 import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
 import DeleteBankAccountButton from "@/components/DeleteBankAccountButton/DeleteBankAccountButton";
 import { hasBalance } from "@/components/DeleteBankAccountButton/utils";
+import Title from "@/components/Title/Title";
+import Button from "@/components/Button/Button";
 
 const BankAccountForm = ({
     title,
@@ -85,18 +87,15 @@ const BankAccountForm = ({
                 className='relative bg-white rounded-md p-4 mt-6 w-full flex flex-col gap-3'
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <h1 className='flex-1 text-xl font-bold text-center'>
-                    {title}
-                </h1>
-                {bankAccount ? (
+                <Title title={title} />
+                {bankAccount && (
                     <div className='absolute top-4 right-4'>
                         <DeleteBankAccountButton
                             bankAccount={bankAccount}
                             isDisabled={hasBalance(bankAccount?.balance)}
                         />
                     </div>
-                ) : null}
-                <hr className='border mb-2' />
+                )}
                 <BankAccountTypeSelector
                     onChange={onChangeAccountType}
                     hasError={!!errors?.accountType}
@@ -133,13 +132,10 @@ const BankAccountForm = ({
                     onChange={onChangeDescription}
                     defaultValue={description}
                 />
-                <button
-                    type='submit'
-                    disabled={isPending}
-                    className='mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2'
-                >
+
+                <Button type='submit' disabled={isPending}>
                     {isPending ? "Saving account..." : "Save account"}
-                </button>
+                </Button>
             </form>
         </>
     );

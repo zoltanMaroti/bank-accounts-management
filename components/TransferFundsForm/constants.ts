@@ -1,0 +1,1 @@
+export const MINIMUM_TRANSFER_AMOUNT = 1;

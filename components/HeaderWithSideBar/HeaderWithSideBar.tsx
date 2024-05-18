@@ -4,6 +4,7 @@ import DashboardIcon from "@/assets/icons/dashboard.svg";
 import InboxIcon from "@/assets/icons/inbox.svg";
 import SignOutIcon from "@/assets/icons/signOut.svg";
 import MenuIcon from "@/assets/icons/menu.svg";
+import TransferIcon from "@/assets/icons/transfer.svg";
 import NotificationsButton from "@/components/NotificationsButton/NotificationsButton";
 import Indicator from "@/components/Indicator/Indicator";
 import AvatarButton from "@/components/AvatarButton/AvatarButton";
@@ -38,6 +39,10 @@ const HeaderWithSideBar = ({ children }: { children: ReactNode }) => {
                     <NavLink href='/'>
                         <DashboardIcon className='w-5 h-5 text-gray-50' />
                         <span className='ms-3'>Dashboard</span>
+                    </NavLink>
+                    <NavLink href='/transfer'>
+                        <TransferIcon className='w-5 h-5 text-gray-50' />
+                        <span className='ms-3'>Transfer</span>
                     </NavLink>
                     <NavLink href='#'>
                         <InboxIcon className='w-5 h-5 text-gray-50' />
