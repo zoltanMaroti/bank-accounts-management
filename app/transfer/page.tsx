@@ -2,6 +2,7 @@ import React from "react";
 import TransferFundsForm from "@/components/TransferFundsForm/TransferFundsForm";
 import { fetchBankAccounts } from "@/components/BankAccounts/services";
 import { fetchCurrencyConversion } from "@/components/TransferFundsForm/services";
+import NoBankAccountMessage from "@/components/NoBankAccountMessage/NoBankAccountMessage";
 
 export default async function TransferPage() {
     const [accounts, currencyConversion] = await Promise.all([
@@ -9,8 +10,8 @@ export default async function TransferPage() {
         fetchCurrencyConversion(),
     ]);
 
-    if (!accounts) {
-        // TODO show error message
+    if (!accounts || !accounts.length) {
+        return <NoBankAccountMessage />;
     }
 
     return (
