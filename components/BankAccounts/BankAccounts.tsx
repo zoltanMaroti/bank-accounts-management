@@ -34,9 +34,11 @@ const BankAccounts = ({
                 <div className='flex flex-col items-center text-center mt-4'>
                     <FileIcon className='h-14 w-14 mb-2 text-gray-400' />
                     <p className='text-lg font-bold'>
-                        No results found for &quot;{debouncedSearchTerm}&quot;.
+                        No results found for &quot;{debouncedSearchTerm}&quot;
                     </p>
-                    <p>Please try again with another keyword.</p>
+                    <p className='text-gray-600'>
+                        Please try again with another keyword
+                    </p>
                 </div>
             )}
 
