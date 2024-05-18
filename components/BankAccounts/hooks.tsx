@@ -16,9 +16,22 @@ export const useSearch = () => {
     const [isPending, startTransition] = useTransition();
 
     const onChangeSearchTerm = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value),
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+
+            setSearchTerm(e.target.value);
+
+            if (value === "") {
+                onClear();
+            }
+        },
         []
     );
+
+    const onClear = () => {
+        setSearchResult([]);
+        setSearchTerm("");
+    };
 
     useEffect(() => {
         const search = async (searchTerm: string) => {
