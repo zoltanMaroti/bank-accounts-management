@@ -10,7 +10,7 @@ import {
 import { BankAccount } from "@/components/BankAccountCard/types";
 import { searchAccount } from "@/components/BankAccounts/actions";
 
-const useDebounce = <T,>(value: T, delay: number = 300): T => {
+export const useDebounce = <T,>(value: T, delay: number = 300): T => {
     const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
     useEffect(() => {
