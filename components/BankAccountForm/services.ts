@@ -1,5 +1,5 @@
 import { BankAccount } from "@/components/BankAccountCard/types";
-import { BankAccountFormValues } from "./types";
+import { BankAccountFormValues } from "@/components/BankAccountForm/types";
 
 export const fetchCreateBankAccount = (data: BankAccount) => {
     return fetch(`${process.env.API_URL}/accounts`, {
@@ -17,7 +17,9 @@ export const fetchCreateBankAccount = (data: BankAccount) => {
 };
 
 export const fetchUpdateBankAccount = async (
-    data: BankAccountFormValues,
+    data:
+        | BankAccountFormValues
+        | (Partial<BankAccountFormValues> & { balance?: number }),
     id: string
 ): Promise<BankAccount> => {
     return fetch(`${process.env.API_URL}/accounts/${id}`, {
