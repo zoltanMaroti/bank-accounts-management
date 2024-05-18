@@ -31,7 +31,7 @@ export const useSearch = () => {
         (e: ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
 
-            setSearchTerm(e.target.value);
+            setSearchTerm(e.target.value.trim());
 
             if (value === "") {
                 onClear();
@@ -61,6 +61,7 @@ export const useSearch = () => {
     return {
         onChangeSearchTerm,
         searchResult,
+        debouncedSearchTerm,
         isPending,
     };
 };
