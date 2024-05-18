@@ -22,3 +22,16 @@ export const fetchBankAccount = async (id: string | string[]) => {
 
     return response.json();
 };
+
+export const fetchSearchBankAccount = async (searchTerm: string) => {
+    const response = await fetch(
+        `${process.env.API_URL}/accounts?q=${searchTerm}`
+    );
+
+    if (!response.ok) {
+        // Handle error, log to Sentry etc.
+        console.error("Failed to search bank account", searchTerm);
+    }
+
+    return response.json();
+};
