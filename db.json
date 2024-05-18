@@ -41,5 +41,14 @@
             "USD": 1.26,
             "EUR": 1.16
         }
-    }
+    },
+    "transactions": [
+        {
+            "id": "ea35",
+            "sourceAccountId": "b914a6c3-38c9-4316-8452-8563394ef3bc",
+            "targetAccountId": "08544aa9-ba48-4fe0-b9a5-3d25e73c9bb0",
+            "targetAmount": 1000,
+            "targetCurrency": "EUR"
+        }
+    ]
 }

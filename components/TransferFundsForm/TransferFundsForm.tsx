@@ -32,6 +32,7 @@ import { steps } from "@/components/Stepper/constants";
 import ReviewTransfer from "@/components/TransferFundsForm/components/ReviewTransfer";
 import { MINIMUM_TRANSFER_AMOUNT } from "@/components/TransferFundsForm/constants";
 import { validateTargetAmount } from "@/components/TransferFundsForm/validation";
+import { createTransaction } from "@/components/TransferFundsForm/actions";
 
 const TransferFundsForm = ({
     accounts,
@@ -59,8 +60,8 @@ const TransferFundsForm = ({
     const [isPending, startTransition] = useTransition();
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
-        startTransition(() => {
-            console.log(data);
+        startTransition(async () => {
+            await createTransaction(data);
         });
     };
 
@@ -213,12 +214,20 @@ const TransferFundsForm = ({
                     />
                 )}
 
-                <Button type='button' onClick={nextStep}>
-                    {isLastStep ? "Transfer" : "Continue"}
+                <Button type='button' onClick={nextStep} disabled={isPending}>
+                    {isLastStep
+                        ? isPending
+                            ? "Transferring..."
+                            : "Transfer"
+                        : "Continue"}
                 </Button>
 
                 {!isFirstStep && (
-                    <button type='button' onClick={previousStep}>
+                    <button
+                        type='button'
+                        onClick={previousStep}
+                        disabled={isPending}
+                    >
                         Back
                     </button>
                 )}
