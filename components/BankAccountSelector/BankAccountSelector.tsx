@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import Select, { SingleValue } from "react-select";
 import { Control, Controller } from "react-hook-form";
 import { BankAccount, Currency } from "@/components/BankAccountCard/types";
-import { BankAccountOption } from "@/components/BankAccountSelector/types";
 import { formatCurrency } from "@/components/BankAccountCard/utils";
 import { TransferFundsFormValues } from "@/components/TransferFundsForm/types";
 import Label from "@/components/Label/Label";
@@ -17,6 +16,7 @@ const BankAccountSelector = ({
     hasError,
     onChange,
     defaultValue,
+    value,
 }: {
     id?: string;
     name: keyof TransferFundsFormValues;
@@ -24,11 +24,10 @@ const BankAccountSelector = ({
     control: Control<TransferFundsFormValues, any>;
     accounts: BankAccount[];
     hasError: boolean;
-    onChange: (id: string) => void;
-    defaultValue?: SingleValue<BankAccountOption>;
+    onChange: () => void;
+    defaultValue?: SingleValue<BankAccount>;
+    value?: SingleValue<BankAccount>;
 }) => {
-    const [value, setValue] = useState();
-
     const formatOptionLabel = ({
         currency,
         balance,
@@ -52,24 +51,13 @@ const BankAccountSelector = ({
         </div>
     );
 
-    const options: BankAccountOption[] = useMemo(
+    const options: BankAccount[] = useMemo(
         () =>
-            accounts.map(
-                ({ id, accountType, balance, currency, description }) => ({
-                    id,
-                    accountType,
-                    balance,
-                    currency,
-                    description,
-                })
-            ),
+            accounts.map((account) => ({
+                ...account,
+            })),
         [accounts]
     );
-
-    useEffect(() => {
-        // Reset state when id changes
-        setValue(undefined);
-    }, [id]);
 
     return (
         <div>
@@ -100,12 +88,11 @@ const BankAccountSelector = ({
                         placeholder='Please choose an option'
                         getOptionValue={(option) => option.id}
                         onChange={(
-                            selectedOption: SingleValue<BankAccountOption>
+                            selectedOption: SingleValue<BankAccount>
                         ) => {
                             field.onChange(selectedOption);
-
                             if (selectedOption) {
-                                onChange(`${selectedOption.id}`);
+                                onChange();
                             }
                         }}
                     />

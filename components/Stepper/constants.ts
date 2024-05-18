@@ -3,7 +3,12 @@ import { Steps } from "@/components/Stepper/types";
 export const steps: Steps = [
     {
         name: "Details",
-        fields: ["targetAmount", "sourceAccountId", "targetAccountId"],
+        fields: [
+            "targetAmount",
+            "sourceAccount",
+            "targetAccount",
+            "targetCurrency",
+        ],
     },
     { name: "Review" },
 ];

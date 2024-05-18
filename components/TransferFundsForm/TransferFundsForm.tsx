@@ -1,16 +1,14 @@
 "use client";
 
 import React, {
-    useState,
     useMemo,
     useTransition,
     useCallback,
     ChangeEventHandler,
-    ChangeEvent,
 } from "react";
 import MoneyIcon from "@/assets/icons/money.svg";
 import CurrencySelector from "@/components/CurrencySelector/CurrencySelector";
-import { BankAccount, Currency } from "@/components/BankAccountCard/types";
+import { BankAccount } from "@/components/BankAccountCard/types";
 import {
     CurrencyConversion,
     TransferFundsFormValues,
@@ -45,6 +43,7 @@ const TransferFundsForm = ({
     const {
         register,
         control,
+        watch,
         trigger,
         clearErrors,
         handleSubmit,
@@ -52,12 +51,12 @@ const TransferFundsForm = ({
         formState: { errors },
     } = useForm<TransferFundsFormValues>();
 
+    const sourceAccount = watch("sourceAccount");
+    const targetAccount = watch("targetAccount");
+    const targetAmount = watch("targetAmount", 0);
+    const targetCurrency = watch("targetCurrency", DEFAULT_CURRENCY);
+
     const [isPending, startTransition] = useTransition();
-    const [sourceAccountId, setSourceAccountId] = useState<string>();
-    const [targetAccountId, setTargetAccountId] = useState<string>();
-    const [targetAmount, setTargetAmount] = useState<number>();
-    const [targetCurrency, setTargetCurrency] =
-        useState<Currency>(DEFAULT_CURRENCY);
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
         startTransition(() => {
@@ -72,52 +71,24 @@ const TransferFundsForm = ({
             callback: handleSubmit(onSubmit),
         });
 
-    const onChangeSourceAccountId = useCallback(
-        (id: string) => {
-            setSourceAccountId(id);
-            setTargetAccountId(undefined);
-            clearErrors("sourceAccountId");
+    const onChangeSourceAccount = useCallback(() => {
+        clearErrors("sourceAccount");
 
-            // Reset target account id to prevent selecting the source as target
-            resetField("targetAccountId");
-        },
-        [resetField, clearErrors]
-    );
+        // Reset target account id to prevent selecting the source as target
+        resetField("targetAccount");
+    }, [clearErrors, resetField]);
 
-    const onChangeTargetAccountId = useCallback(
-        (id: string) => {
-            setTargetAccountId(id);
-            clearErrors("targetAccountId");
-        },
+    const onChangeTargetAccount = useCallback(
+        () => clearErrors("targetAccount"),
         [clearErrors]
     );
 
-    const onChangeTargetCurrency = useCallback((currency: Currency) => {
-        setTargetCurrency(currency);
-    }, []);
-
     const onChangeTargetAmount: ChangeEventHandler<HTMLInputElement> =
-        useCallback(
-            (e: ChangeEvent<HTMLInputElement>) => {
-                setTargetAmount(+e.target.value);
-                clearErrors("targetAmount");
-            },
-            [clearErrors]
-        );
+        useCallback(() => clearErrors("targetAmount"), [clearErrors]);
 
     const eligibleTargetAccounts = useMemo(
-        () => accounts.filter((account) => account.id !== sourceAccountId),
-        [accounts, sourceAccountId]
-    );
-
-    const sourceAccount = useMemo(
-        () => accounts.find((account) => account.id === sourceAccountId),
-        [accounts, sourceAccountId]
-    );
-
-    const targetAccount = useMemo(
-        () => accounts.find((account) => account.id === targetAccountId),
-        [accounts, targetAccountId]
+        () => accounts.filter((account) => account.id !== sourceAccount?.id),
+        [accounts, sourceAccount]
     );
 
     const currencyMultiplier = getCurrencyMultiplier(
@@ -154,28 +125,30 @@ const TransferFundsForm = ({
                     <>
                         <BankAccountSelector
                             label='Transfer from'
-                            name='sourceAccountId'
+                            name='sourceAccount'
                             control={control}
                             accounts={accounts}
-                            hasError={!!errors?.sourceAccountId}
-                            onChange={onChangeSourceAccountId}
+                            hasError={!!errors?.sourceAccount}
+                            onChange={onChangeSourceAccount}
                             defaultValue={sourceAccount}
+                            value={sourceAccount}
                         />
 
-                        {sourceAccountId && (
+                        {sourceAccount && (
                             <BankAccountSelector
-                                id={sourceAccountId}
+                                id={sourceAccount.id}
                                 label='Transfer to'
-                                name='targetAccountId'
+                                name='targetAccount'
                                 control={control}
                                 accounts={eligibleTargetAccounts}
-                                hasError={!!errors?.targetAccountId}
-                                onChange={onChangeTargetAccountId}
+                                hasError={!!errors?.targetAccount}
+                                onChange={onChangeTargetAccount}
+                                value={targetAccount}
                                 defaultValue={targetAccount}
                             />
                         )}
 
-                        {targetAccountId && (
+                        {targetAccount && (
                             <div>
                                 <Label
                                     htmlFor='targetAmount'
@@ -208,7 +181,8 @@ const TransferFundsForm = ({
                                         />
                                     </div>
                                     <CurrencySelector
-                                        onChange={onChangeTargetCurrency}
+                                        control={control}
+                                        name='targetCurrency'
                                     />
                                 </div>
 

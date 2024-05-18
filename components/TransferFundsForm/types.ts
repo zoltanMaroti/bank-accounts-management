@@ -1,4 +1,4 @@
-import { Currency } from "@/components/BankAccountCard/types";
+import { BankAccount, Currency } from "@/components/BankAccountCard/types";
 
 export type CurrencyConversion = {
     [key in Currency]: {
@@ -7,7 +7,8 @@ export type CurrencyConversion = {
 };
 
 export type TransferFundsFormValues = {
-    sourceAccountId: string;
-    targetAccountId: string;
+    sourceAccount: BankAccount;
+    targetAccount: BankAccount;
     targetAmount: number;
+    targetCurrency: Currency;
 };
