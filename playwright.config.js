@@ -29,7 +29,6 @@ export default defineConfig({
         stderr: "pipe",
     },
     timeout: 30 * 1000,
-    maxFailures: 2,
     fullyParallel: true,
     use: {
         baseURL,

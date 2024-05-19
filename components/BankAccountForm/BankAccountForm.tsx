@@ -104,6 +104,7 @@ const BankAccountForm = ({
                 />
                 <Select
                     id='currency'
+                    data-testid='currency-selector'
                     label='Choose currency'
                     hasError={!!errors.currency}
                     errorMessage={errors.currency?.message}
@@ -125,6 +126,7 @@ const BankAccountForm = ({
                     {...register("description")}
                     type='text'
                     id='description'
+                    data-testid='account-description'
                     placeholder='Add description'
                     label='Account description (optional)'
                     hasError={!!errors?.description}
@@ -133,7 +135,11 @@ const BankAccountForm = ({
                     defaultValue={description}
                 />
 
-                <Button type='submit' disabled={isPending}>
+                <Button
+                    data-testid='submit-account'
+                    type='submit'
+                    disabled={isPending}
+                >
                     {isPending ? "Saving account..." : "Save account"}
                 </Button>
             </form>
