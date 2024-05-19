@@ -3,11 +3,13 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "concurrently \"npm run server\" \"next dev\"",
+        "dev": "concurrently \"json-server -p 1111 db.json\" \"next dev -p 3000\"",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "server": "json-server -p 1111 db.json"
+        "e2e": "API_URL=http://localhost:1112 APP_ENV=e2e concurrently \"json-server -p 1112 db-e2e.json\" \"next dev -p 3001\"",
+        "test": "npx playwright test",
+        "update-snapshots": "npx playwright test --update-snapshots"
     },
     "dependencies": {
         "json-server": "0.17.4",
@@ -20,6 +22,7 @@
         "uuid": "^9.0.1"
     },
     "devDependencies": {
+        "@playwright/test": "^1.44.0",
         "@svgr/webpack": "^8.1.0",
         "@types/node": "^20",
         "@types/react": "^18",

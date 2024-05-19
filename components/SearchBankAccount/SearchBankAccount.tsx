@@ -18,6 +18,7 @@ const SearchBankAccount = ({
         >
             <input
                 type='search'
+                data-testid='search'
                 placeholder='Search for account, currency or balance'
                 onChange={onChange}
                 className={twMerge(
