@@ -21,7 +21,7 @@ const BankAccounts = ({
     const showInitialAccounts = !debouncedSearchTerm && !isPending;
 
     return (
-        <section className='flex flex-col gap-4 m-2'>
+        <section className='flex flex-col gap-4 m-2 min-h-56'>
             <div className='flex justify-between items-center'>
                 <h1 className='flex-1 text-2xl font-bold'>Your accounts</h1>
                 <SearchBankAccount
