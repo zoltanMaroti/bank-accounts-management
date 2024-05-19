@@ -14,8 +14,10 @@ export type TransferFundsFormValues = {
 };
 
 export type Transaction = {
-    sourceAccountId: string;
-    targetAccountId: string;
+    id?: string;
+    sourceAccount: BankAccount;
+    targetAccount: BankAccount;
     targetAmount: number;
     targetCurrency: Currency;
+    timestamp: number;
 };
