@@ -1,6 +1,6 @@
-import { BankAccount, Currency } from "@/components/BankAccountCard/types";
-import { formatCurrency } from "@/components/BankAccountCard/utils";
-import { CurrencyConversion } from "@/components/TransferFundsForm/types";
+import { Currency } from "../BankAccountCard/types";
+import { formatCurrency } from "../BankAccountCard/utils";
+import { CurrencyConversion } from "../TransferFundsForm/types";
 
 export const hasSufficientFunds = (
     currencyConvertedSourceBalance: number,
