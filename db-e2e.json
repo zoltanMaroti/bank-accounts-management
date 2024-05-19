@@ -20,7 +20,7 @@
             "id": "0f844aa6-03a4-4059-8d80-9990903edfa8",
             "ownerId": 1,
             "currency": "GBP",
-            "balance": 3000,
+            "balance": 0,
             "accountType": "salary",
             "description": "My company salary account"
         }
