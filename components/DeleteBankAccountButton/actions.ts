@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { BankAccount } from "@/components/BankAccountCard/types";
 import { fetchDeleteBankAccount } from "@/components/DeleteBankAccountButton/services";
 import { hasBalance } from "@/components/DeleteBankAccountButton/utils";
+import { revalidatePath } from "next/cache";
 
 export const deleteBankAccount = async (account: BankAccount) => {
     if (!account.id) {
@@ -16,5 +17,7 @@ export const deleteBankAccount = async (account: BankAccount) => {
     }
 
     await fetchDeleteBankAccount(id!);
+
+    revalidatePath("/");
     redirect("/");
 };
