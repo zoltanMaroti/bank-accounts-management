@@ -1,6 +1,6 @@
 import React from "react";
 import { Transaction } from "@/components/TransferFundsForm/types";
-import { formatCurrency } from "../BankAccountCard/utils";
+import { formatCurrency } from "@/components/BankAccountCard/utils";
 
 const Transactions = ({ transactions }: { transactions?: Transaction[] }) => {
     if (!transactions || !transactions.length) {
