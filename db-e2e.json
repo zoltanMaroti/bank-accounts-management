@@ -1,6 +1,14 @@
 {
     "accounts": [
         {
+            "id": "8e8dfd38-a5f4-4020-8c41-18b3e46e9502",
+            "ownerId": 1,
+            "balance": 0,
+            "currency": "EUR",
+            "accountType": "salary",
+            "description": "This is my euro account"
+        },
+        {
             "id": "b914a6c3-38c9-4316-8452-8563394ef3bc",
             "ownerId": 1,
             "currency": "EUR",
@@ -20,7 +28,7 @@
             "id": "0f844aa6-03a4-4059-8d80-9990903edfa8",
             "ownerId": 1,
             "currency": "GBP",
-            "balance": 0,
+            "balance": 3000,
             "accountType": "salary",
             "description": "My company salary account"
         }
