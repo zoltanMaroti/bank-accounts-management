@@ -28,6 +28,7 @@ const DeleteBankAccountButton = ({
                 />
             ) : null}
             <button
+                data-testid='delete-account-button'
                 type='button'
                 onClick={toggleModal}
                 disabled={isDisabled}

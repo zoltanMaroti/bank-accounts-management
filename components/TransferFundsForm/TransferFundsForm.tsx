@@ -162,6 +162,7 @@ const TransferFundsForm = ({
                                             <MoneyIcon className='w-4 h-4 text-gray-500' />
                                         </div>
                                         <input
+                                            data-testid='target-amount'
                                             id='targetAmount'
                                             type='number'
                                             min={MINIMUM_TRANSFER_AMOUNT}
@@ -214,7 +215,12 @@ const TransferFundsForm = ({
                     />
                 )}
 
-                <Button type='button' onClick={nextStep} disabled={isPending}>
+                <Button
+                    data-testid='submit-button'
+                    type='button'
+                    onClick={nextStep}
+                    disabled={isPending}
+                >
                     {isLastStep
                         ? isPending
                             ? "Transferring..."
@@ -224,6 +230,7 @@ const TransferFundsForm = ({
 
                 {!isFirstStep && (
                     <button
+                        data-testid='back-button'
                         type='button'
                         onClick={previousStep}
                         disabled={isPending}

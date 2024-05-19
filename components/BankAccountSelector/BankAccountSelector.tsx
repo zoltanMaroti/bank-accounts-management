@@ -39,7 +39,7 @@ const BankAccountSelector = ({
         accountType: string;
         description?: string;
     }) => (
-        <div>
+        <div data-testid={`${name}-selector-item`}>
             <div className='flex gap-2 justify-between'>
                 <span>
                     <span>{currency} | </span>
@@ -60,7 +60,7 @@ const BankAccountSelector = ({
     );
 
     return (
-        <div>
+        <div data-testid={name}>
             <Label htmlFor={name} label={label} hasError={hasError} />
             <Controller
                 name={name}
