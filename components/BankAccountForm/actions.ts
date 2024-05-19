@@ -8,6 +8,7 @@ import {
 import { BankAccountFormValues } from "@/components/BankAccountForm/types";
 import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { generateBankAccountId } from "@/components/BankAccountCard/utils";
+import { revalidatePath } from "next/cache";
 
 export const createBankAccount = async (data: BankAccountFormValues) => {
     const { currency, accountType, description } = data;
@@ -26,6 +27,7 @@ export const createBankAccount = async (data: BankAccountFormValues) => {
         description,
     });
 
+    revalidatePath("/");
     redirect("/");
 };
 
@@ -38,5 +40,7 @@ export const updateBankAccount = async (
     }
 
     await fetchUpdateBankAccount(data, id);
+
+    revalidatePath("/");
     redirect("/");
 };
