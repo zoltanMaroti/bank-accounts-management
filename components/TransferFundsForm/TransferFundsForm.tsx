@@ -61,7 +61,7 @@ const TransferFundsForm = ({
 
     const onSubmit: SubmitHandler<TransferFundsFormValues> = (data) => {
         startTransition(async () => {
-            await createTransaction(data);
+            await createTransaction(data, currencyConversion);
         });
     };
 
