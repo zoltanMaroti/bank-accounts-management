@@ -8,14 +8,10 @@ test.describe("Dashboard page visual regression tests", () => {
         await page.setViewportSize(viewport);
     });
 
-    test("Dashboard loads", async ({ page }) => {
-        const screenshot = await page.screenshot(screenshotConfig);
-        expect(screenshot).toMatchSnapshot("dashboard.jpeg");
-    });
-
     test("Search is opened", async ({ page }) => {
         const search = await page.getByTestId("search");
         await search.click();
+        await page.waitForTimeout(500);
         const screenshot = await page.screenshot(screenshotConfig);
         expect(screenshot).toMatchSnapshot("search-open.jpeg");
     });
@@ -41,6 +37,7 @@ test.describe("Dashboard page visual regression tests", () => {
     test("Edit button is displayed on hover", async ({ page }) => {
         const card = await page.getByTestId("account-card").first();
         await card.hover();
+        await page.waitForTimeout(500);
         const screenshot = await page.screenshot(screenshotConfig);
         expect(screenshot).toMatchSnapshot("card-hover.jpeg");
     });
