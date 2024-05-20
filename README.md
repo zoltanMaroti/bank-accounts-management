@@ -2,8 +2,6 @@
 
 # Bank Accounts Management
 
-This project was created as part of an assignment for a frontend engineer position.
-
 Features:
 
 -   Create, list, update, delete and search accounts with different account types and currencies
