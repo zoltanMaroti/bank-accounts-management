@@ -39,6 +39,11 @@ APP_ENV="dev"
 ```bash
 cd bank-accounts-management
 npm install
+```
+
+To run E2E tests, install Playwright browser binaries with the following command
+
+```bash
 npx playwright install
 ```
 
