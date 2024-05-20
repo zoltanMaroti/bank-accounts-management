@@ -14,14 +14,16 @@ const BankAccounts = ({
 }: {
     initialAccounts: BankAccount[];
 }) => {
-    const { searchResult, debouncedSearchTerm, isPending, onChangeSearchTerm } =
+    const { searchResult, debouncedSearchTerm, onChangeSearchTerm } =
         useSearch();
 
-    const noResult = debouncedSearchTerm && !searchResult.length && !isPending;
-    const showInitialAccounts = !debouncedSearchTerm && !isPending;
+    const showCreateAccountButton = !debouncedSearchTerm;
+    const hasSearchResult = searchResult.length > 0;
+    const noResult = debouncedSearchTerm && !hasSearchResult;
+    const accounts = hasSearchResult ? searchResult : initialAccounts;
 
     return (
-        <section className='flex flex-col gap-4 m-2 min-h-56'>
+        <section className='flex flex-col gap-4 m-2 min-h-64'>
             <div className='flex justify-between items-center'>
                 <h1 className='flex-1 text-2xl font-bold'>Your accounts</h1>
                 <SearchBankAccount
@@ -30,7 +32,7 @@ const BankAccounts = ({
                 />
             </div>
 
-            {noResult && (
+            {noResult ? (
                 <div className='flex flex-col items-center text-center mt-4'>
                     <FileIcon className='h-14 w-14 mb-2 text-gray-400' />
                     <p className='text-lg font-bold'>
@@ -40,60 +42,40 @@ const BankAccounts = ({
                         Please try again with another keyword
                     </p>
                 </div>
-            )}
+            ) : (
+                <div className='flex gap-2 w-full'>
+                    {showCreateAccountButton ? (
+                        <div className='flex-shrink-0'>
+                            <CreateBankAccountButton />
+                        </div>
+                    ) : null}
 
-            {showInitialAccounts && (
-                <div className='flex gap-2'>
-                    <CreateBankAccountButton />
-                    <HorizontalScroll>
-                        {initialAccounts.map(
-                            ({
-                                id,
-                                ownerId,
-                                currency,
-                                balance,
-                                accountType,
-                                description,
-                            }) => (
-                                <BankAccountCard
-                                    key={id}
-                                    id={id}
-                                    ownerId={ownerId}
-                                    currency={currency}
-                                    balance={balance}
-                                    accountType={accountType}
-                                    description={description}
-                                />
-                            )
-                        )}
-                    </HorizontalScroll>
+                    <div className='flex-grow overflow-hidden'>
+                        <HorizontalScroll>
+                            {accounts.map(
+                                ({
+                                    id,
+                                    ownerId,
+                                    currency,
+                                    balance,
+                                    accountType,
+                                    description,
+                                }) => (
+                                    <BankAccountCard
+                                        key={id}
+                                        id={id}
+                                        ownerId={ownerId}
+                                        currency={currency}
+                                        balance={balance}
+                                        accountType={accountType}
+                                        description={description}
+                                    />
+                                )
+                            )}
+                        </HorizontalScroll>
+                    </div>
                 </div>
             )}
-
-            {searchResult.length ? (
-                <HorizontalScroll>
-                    {searchResult.map(
-                        ({
-                            id,
-                            ownerId,
-                            currency,
-                            balance,
-                            accountType,
-                            description,
-                        }) => (
-                            <BankAccountCard
-                                key={id}
-                                id={id}
-                                ownerId={ownerId}
-                                currency={currency}
-                                balance={balance}
-                                accountType={accountType}
-                                description={description}
-                            />
-                        )
-                    )}
-                </HorizontalScroll>
-            ) : null}
         </section>
     );
 };
