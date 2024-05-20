@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img src="./public/images/bank-accounts-management.gif" width="640" height="320" />
 
-## Getting Started
+# Bank Accounts Management
 
-First, run the development server:
+This project was created as part of an assignment for a frontend engineer position.
+
+Features:
+
+-   Create, list, update, delete and search accounts with different account types and currencies
+-   Transfer funds between accounts in different currencies
+-   Account balance validation with currency conversion
+-   E2E tests for visual regression testing
+-   CRUD json server to provide mock data
+-   Utilised Next server actions and server components
+
+# Getting Started
+
+## Cloning
+
+```bash
+git clone https://github.com/zoltanMaroti/bank-accounts-management.git
+```
+
+## Prerequisites
+
+-   [Node.js](https://nodejs.org/) 18.17 or later
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env.local file in the project root (see .env.example file)
+
+```
+API_URL="http://localhost:1111"
+APP_ENV="dev"
+```
+
+## Installation
+
+```bash
+cd bank-accounts-management
+npm install
+npx playwright install
+```
+
+## Starting
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running Tests
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To run visual regression tests, run the following command
 
-## Learn More
+```bash
+npm run test:e2e
+```
 
-To learn more about Next.js, take a look at the following resources:
+To run unit tests, run the following command
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run test:unit
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To update screenshots, run the following command
 
-## Deploy on Vercel
+```bash
+npm run update-snapshots
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Built With
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   [Next](https://nextjs.org/)
+-   [React](https://react.dev/)
+-   [Tailwind](https://tailwindcss.com/)
+-   [Typescript](https://www.typescriptlang.org/)
+-   [Playwright](https://playwright.dev/)
+-   [Jest](https://jestjs.io/)
+
+## Roadmap
+
+-   Paginate bank accounts
+-   Optimize for mobile and tablet devices
+-   Stabilize flaky E2E tests
+
+## Author
+
+Zoltán Maróti [Github](https://www.github.com/zoltanMaroti) | [LinkedIn](https://www.linkedin.com/in/zoltan-maroti/)
