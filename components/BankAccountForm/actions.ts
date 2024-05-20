@@ -42,5 +42,6 @@ export const updateBankAccount = async (
     await fetchUpdateBankAccount(data, id);
 
     revalidatePath("/");
+    revalidatePath(`/account/${id}`);
     redirect("/");
 };

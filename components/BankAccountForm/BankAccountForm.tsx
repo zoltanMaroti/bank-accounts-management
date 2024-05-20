@@ -7,11 +7,14 @@ import React, {
     ChangeEvent,
 } from "react";
 import Input from "@/components/Input/Input";
-import Select from "@/components/Select/Select";
+import { SingleValue } from "react-select";
 import { useForm, SubmitHandler } from "react-hook-form";
 import BankAccountCard from "@/components/BankAccountCard/BankAccountCard";
 import BankAccountTypeSelector from "@/components/BankAccountTypeSelector/BankAccountTypeSelector";
-import { BankAccountFormValues } from "@/components/BankAccountForm/types";
+import {
+    BankAccountFormValues,
+    CurrencyOption,
+} from "@/components/BankAccountForm/types";
 import { AccountType, Currency } from "@/components/BankAccountCard/types";
 import { BankAccount } from "@/components/BankAccountCard/types";
 import { DEFAULT_BANK_ACCOUNT_TYPE } from "@/components/BankAccountForm/constants";
@@ -19,6 +22,7 @@ import DeleteBankAccountButton from "@/components/DeleteBankAccountButton/Delete
 import { hasBalance } from "@/components/DeleteBankAccountButton/utils";
 import Title from "@/components/Title/Title";
 import Button from "@/components/Button/Button";
+import CurrencySelector from "@/components/BankAccountForm/components/CurrencySelector";
 
 const BankAccountForm = ({
     title,
@@ -43,6 +47,7 @@ const BankAccountForm = ({
 
     const {
         register,
+        control,
         setValue: setFormValue,
         handleSubmit,
         formState: { errors },
@@ -63,15 +68,19 @@ const BankAccountForm = ({
     const onChangeDescription = (e: ChangeEvent<HTMLInputElement>) =>
         setDescription(e.target.value);
 
-    const onChangeCurrency = (e: ChangeEvent<HTMLSelectElement>) =>
-        setCurrency(e.target.value as Currency);
-
     const onChangeAccountType = useCallback(
         (value: AccountType) => {
             setFormValue("accountType", value);
             setAccountType(value);
         },
         [setFormValue]
+    );
+
+    const onChangeCurrency = useCallback(
+        (option: SingleValue<CurrencyOption>) => {
+            setCurrency((option?.value as Currency) || "");
+        },
+        []
     );
 
     return (
@@ -102,33 +111,21 @@ const BankAccountForm = ({
                     register={register}
                     defaultValue={accountType}
                 />
-                <Select
-                    id='currency'
-                    data-testid='currency-selector'
-                    label='Choose currency'
-                    hasError={!!errors.currency}
-                    errorMessage={errors.currency?.message}
-                    {...register("currency", {
-                        required: {
-                            value: true,
-                            message: "This field is required",
-                        },
-                    })}
+                <CurrencySelector
+                    control={control}
+                    currency={bankAccount?.currency}
+                    hasError={!!errors?.currency}
                     onChange={onChangeCurrency}
-                    defaultValue={currency}
-                >
-                    <option value=''>Please choose an option</option>
-                    <option value='EUR'>Euro</option>
-                    <option value='USD'>US Dollar</option>
-                    <option value='GBP'>British Pound</option>
-                </Select>
+                />
                 <Input
-                    {...register("description")}
+                    {...register("description", {
+                        required: "This field is required",
+                    })}
                     type='text'
                     id='description'
                     data-testid='account-description'
                     placeholder='Add description'
-                    label='Account description (optional)'
+                    label='Account description'
                     hasError={!!errors?.description}
                     errorMessage={errors?.description?.message}
                     onChange={onChangeDescription}
