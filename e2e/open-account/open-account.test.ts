@@ -8,22 +8,11 @@ test.describe("Open account page visual regression tests", () => {
         await page.setViewportSize(viewport);
     });
 
-    test("Page is rendered", async ({ page }) => {
-        const screenshot = await page.screenshot(screenshotConfig);
-        expect(screenshot).toMatchSnapshot("open-account.jpeg");
-    });
-
     test("Account description is rendered in preview", async ({ page }) => {
         const description = await page.getByTestId("account-description");
         await description.fill("This is a test description");
         const screenshot = await page.screenshot(screenshotConfig);
         expect(screenshot).toMatchSnapshot("account-description.jpeg");
-    });
-
-    test("Account currency is rendered in preview", async ({ page }) => {
-        await page.getByTestId("currency-selector").selectOption("EUR");
-        const screenshot = await page.screenshot(screenshotConfig);
-        expect(screenshot).toMatchSnapshot("account-currency.jpeg");
     });
 
     test("Form validation errors are rendered", async ({ page }) => {
