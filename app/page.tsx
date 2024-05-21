@@ -4,8 +4,6 @@ import { fetchBankAccounts } from "@/components/BankAccounts/services";
 import NoBankAccountMessage from "@/components/NoBankAccountMessage/NoBankAccountMessage";
 import { fetchTransactions } from "@/components/Transactions/services";
 
-export const fetchCache = "force-no-store";
-
 const BankAccounts = dynamic(
     () => import("@/components/BankAccounts/BankAccounts")
 );
