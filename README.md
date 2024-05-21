@@ -36,7 +36,6 @@ APP_ENV="dev"
 ## Installation
 
 ```bash
-cd bank-accounts-management
 npm install
 ```
 
