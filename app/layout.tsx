@@ -3,7 +3,9 @@ import { Josefin_Sans } from "next/font/google";
 import HeaderWithSideBar from "@/components/HeaderWithSideBar/HeaderWithSideBar";
 import "./globals.css";
 
-export const fetchCache = "force-no-store";
+// Opt out caching for e2e testing
+export const fetchCache =
+    process.env.APP_ENV === "e2e" ? "force-no-store" : "auto";
 
 const inter = Josefin_Sans({ subsets: ["latin"] });
 
